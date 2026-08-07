@@ -39,7 +39,7 @@
     -webkit-font-smoothing:antialiased;
   }
   .wrap{
-    max-width:1080px;margin:0 auto;padding:36px 20px 90px;
+    max-width:1080px;margin:0 auto;padding:36px 20px 120px;
     position:relative;
     isolation:isolate;
     background:
@@ -245,6 +245,18 @@
   .btn-ghost{background:var(--glass-1);border:1px solid var(--glass-border-soft);color:var(--ink-dim);}
   .btn-ghost:hover{color:var(--ink);border-color:var(--glass-border);background:var(--glass-2);}
   .save-flash{font-size:12px;color:var(--teal-soft);font-weight:700;opacity:0;transition:opacity .2s;}
+
+  .toast{
+    position:fixed;left:50%;bottom:100px;transform:translate(-50%,12px);z-index:1200;
+    background:rgba(20,38,34,0.85);border:1px solid rgba(94,232,204,0.45);
+    color:var(--teal-soft);font-weight:800;font-size:13px;
+    padding:12px 22px;border-radius:var(--r-pill);
+    box-shadow:0 14px 40px rgba(0,0,0,0.45), var(--glass-hi);
+    backdrop-filter:var(--blur);-webkit-backdrop-filter:var(--blur);
+    opacity:0;pointer-events:none;transition:opacity .25s ease, transform .25s ease;
+    white-space:nowrap;
+  }
+  .toast.show{opacity:1;transform:translate(-50%,0);}
   .save-flash.show{opacity:1;}
 
   /* ---------- special conflict modal ---------- */
@@ -398,6 +410,144 @@
   footer{margin-top:50px;padding-top:20px;border-top:1px solid var(--glass-border-soft);font-size:11.5px;color:var(--ink-faint);line-height:1.7;}
   footer b{color:var(--ink-dim);}
 
+  /* ---------- tab panels ---------- */
+  .tab-panel{display:none;}
+  .tab-panel.active{display:block;animation:fadein .18s ease;}
+
+  /* ---------- bottom nav (liquid glass) ---------- */
+  .bottom-nav{
+    position:fixed;left:50%;bottom:max(18px, env(safe-area-inset-bottom));transform:translateX(-50%);
+    z-index:800;display:flex;gap:2px;padding:7px;
+    background:rgba(20,38,34,0.55);
+    border:1px solid var(--glass-border);
+    border-radius:var(--r-pill);
+    backdrop-filter:var(--blur-strong);-webkit-backdrop-filter:var(--blur-strong);
+    box-shadow:0 16px 50px rgba(0,0,0,0.45), var(--glass-hi);
+  }
+  .nav-btn{
+    display:flex;flex-direction:column;align-items:center;gap:3px;
+    padding:8px 14px;border-radius:var(--r-pill);
+    background:none;border:none;color:var(--ink-faint);
+    font-family:'Manrope',sans-serif;font-size:10px;font-weight:800;letter-spacing:.02em;
+    cursor:pointer;transition:all .18s ease;
+  }
+  .nav-btn svg{width:21px;height:21px;stroke:currentColor;fill:none;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round;display:block;margin:0 auto;}
+  .nav-btn:hover{color:var(--ink);}
+  .nav-btn.active{
+    color:#04241d;background:linear-gradient(135deg, var(--teal), #2ea88c);
+    box-shadow:0 6px 18px rgba(94,232,204,0.3);
+  }
+
+  /* ---------- members grid ---------- */
+  .members-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(130px,1fr));gap:12px;margin-bottom:20px;}
+  .member-card{
+    background:var(--glass-1);border:1px solid var(--glass-border-soft);border-radius:var(--r-md);
+    box-shadow:var(--glass-hi);overflow:hidden;cursor:pointer;transition:all .18s ease;padding-bottom:10px;text-align:center;
+  }
+  .member-card:hover{border-color:var(--glass-border);background:var(--glass-2);transform:translateY(-2px);}
+  .member-card .mc-photo{
+    width:100%;aspect-ratio:1/1;display:flex;align-items:center;justify-content:center;
+    font-family:'Cormorant Garamond',serif;font-weight:700;font-size:26px;color:#04241d;overflow:hidden;
+  }
+  .member-card .mc-photo img{width:100%;height:100%;object-fit:cover;display:block;}
+  .member-card .mc-name{margin-top:8px;font-weight:800;font-size:12.5px;color:var(--ink);letter-spacing:.02em;}
+  .member-card .mc-badge{
+    display:inline-block;margin-top:5px;padding:2px 9px;border-radius:var(--r-pill);
+    background:rgba(94,232,204,0.14);border:1px solid rgba(94,232,204,0.3);color:var(--teal-soft);
+    font-size:10px;font-weight:800;
+  }
+
+  /* ---------- day tabs (table view) ---------- */
+  .day-tabs{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:14px;}
+  .day-tab{
+    padding:8px 18px;background:var(--glass-1);border:1px solid var(--glass-border-soft);color:var(--ink-dim);
+    font-weight:800;font-size:12.5px;letter-spacing:.03em;cursor:pointer;transition:all .18s ease;
+    border-radius:var(--r-pill);
+  }
+  .day-tab:hover{border-color:var(--glass-border);color:var(--ink);background:var(--glass-2);}
+  .day-tab.active{
+    background:linear-gradient(135deg, var(--teal), #2ea88c);color:#04241d;border-color:transparent;
+    box-shadow:0 6px 18px rgba(94,232,204,0.3);
+  }
+
+  .xt-legend{
+    display:flex;align-items:center;gap:8px;font-size:11.5px;color:var(--ink-faint);margin-bottom:14px;
+  }
+  .xt-legend b{color:var(--teal-soft);}
+  .xt-legend-dot{width:7px;height:7px;border-radius:50%;background:var(--teal);flex:0 0 auto;box-shadow:0 0 8px rgba(94,232,204,0.7);}
+
+  /* ---------- cross-tab schedule table ---------- */
+  .cross-table-wrap{
+    background:var(--glass-1);border:1px solid var(--glass-border-soft);border-radius:var(--r-lg);
+    box-shadow:var(--glass-shadow), var(--glass-hi);
+    overflow-x:auto;overflow-y:hidden;margin-bottom:20px;-webkit-overflow-scrolling:touch;
+  }
+  .cross-table{border-collapse:separate;border-spacing:0;width:100%;}
+  .cross-table th, .cross-table td{padding:0;text-align:center;vertical-align:middle;}
+  .xt-corner, .xt-name-cell{
+    position:sticky;left:0;z-index:5;
+    background:rgba(16,32,29,0.97);
+    box-shadow:2px 0 8px rgba(0,0,0,0.25);
+  }
+  .xt-corner{z-index:6;}
+  .xt-colhead{
+    padding:10px 8px;min-width:64px;border-bottom:1px solid var(--glass-border-soft);
+  }
+  .xt-colhead .xt-r{font-size:12px;font-weight:800;color:var(--ink);}
+  .xt-colhead .xt-t{font-size:9px;color:var(--ink-faint);margin-top:2px;white-space:nowrap;}
+  .xt-colhead.special .xt-r{color:var(--amber);}
+  .xt-name-cell{
+    padding:8px 12px 8px 10px;display:flex;align-items:center;gap:8px;min-width:130px;
+    border-bottom:1px solid rgba(255,255,255,0.06);border-right:1px solid var(--glass-border-soft);
+    text-align:left;
+  }
+  .xt-name-cell .xt-nm{font-weight:700;font-size:12.5px;color:var(--ink);white-space:nowrap;}
+  .xt-name-cell .xt-total{font-size:10px;color:var(--teal-soft);font-weight:800;margin-left:auto;flex:0 0 auto;}
+  .xt-cell-wrap{border-bottom:1px solid rgba(255,255,255,0.06);}
+  .xt-cell{
+    position:relative;width:64px;height:56px;margin:0 auto;
+    display:flex;flex-direction:column;align-items:center;justify-content:center;gap:2px;
+    cursor:pointer;transition:background .15s ease;
+  }
+  .xt-cell:hover{background:rgba(94,232,204,0.08);}
+  .xt-cell:active{background:rgba(94,232,204,0.16);}
+  .xt-cell .xt-lane{
+    font-size:11px;font-weight:800;color:var(--teal-soft);
+    background:rgba(94,232,204,0.12);border:1px solid rgba(94,232,204,0.35);
+    padding:2px 7px;border-radius:var(--r-pill);
+  }
+  .xt-cell.xt-special .xt-lane{
+    color:var(--amber);background:rgba(255,199,115,0.14);border-color:rgba(255,199,115,0.4);
+  }
+  .xt-cell .xt-qtynum{font-size:14px;font-weight:800;color:var(--ink);}
+  .xt-cell.xt-has-qty .xt-qtynum{color:var(--teal-soft);}
+  .xt-minus{
+    position:absolute;top:2px;right:2px;width:17px;height:17px;border-radius:50%;
+    background:rgba(255,95,126,0.18);border:1px solid rgba(255,95,126,0.4);color:var(--crimson-soft);
+    font-size:10px;font-weight:800;display:flex;align-items:center;justify-content:center;
+    cursor:pointer;line-height:1;
+  }
+  .xt-minus:hover{background:rgba(255,95,126,0.3);}
+  .xt-empty-cell{width:64px;height:56px;margin:0 auto;display:flex;align-items:center;justify-content:center;color:var(--ink-faint);font-size:13px;opacity:.4;}
+
+  /* ---------- home stat card ---------- */
+  .home-stat-card{
+    background:var(--glass-1);border:1px solid var(--glass-border-soft);border-radius:var(--r-lg);
+    box-shadow:var(--glass-shadow), var(--glass-hi);padding:24px 22px;margin-bottom:8px;
+  }
+  .home-stat-card .hs-label{font-size:12px;color:var(--ink-faint);letter-spacing:.08em;text-transform:uppercase;font-weight:700;margin-bottom:8px;}
+  .home-stat-card .hs-num{font-family:'Cormorant Garamond',serif;font-size:48px;font-weight:700;color:var(--teal-soft);line-height:1;}
+  .home-stat-card .hs-rows{margin-top:16px;display:flex;flex-direction:column;gap:8px;}
+  .home-stat-card .hs-row{display:flex;justify-content:space-between;font-size:13px;color:var(--ink-dim);padding:8px 0;border-top:1px solid var(--glass-border-soft);}
+  .home-stat-card .hs-row b{color:var(--ink);}
+  .home-cta{
+    display:block;width:100%;margin-top:18px;padding:13px;border:none;border-radius:var(--r-pill);
+    background:linear-gradient(135deg, var(--teal), #2ea88c);color:#04241d;
+    font-family:'Manrope',sans-serif;font-weight:800;font-size:13.5px;letter-spacing:.03em;cursor:pointer;
+    box-shadow:0 8px 24px rgba(94,232,204,0.3);transition:all .18s;
+  }
+  .home-cta:hover{filter:brightness(1.08);transform:translateY(-1px);}
+
   @media(max-width:520px){
     .slot-grid{grid-template-columns:repeat(auto-fill,minmax(150px,1fr));}
     .summary-total{flex-direction:column;align-items:flex-start;gap:6px;}
@@ -413,42 +563,70 @@
     <span class="storage-state" id="storageState">กำลังเชื่อมต่อข้อมูล…</span>
   </div>
 
-  <header class="hero">
-    <div class="eyebrow">Koi Tsunjatta — 11th Single</div>
-    <h1>Let me know!<span class="sub">HANDSHAKE PLANNER</span></h1>
-    <div class="meta">
-      <div>Avenue A, G Floor — MBK Center</div>
-      <div>SAT 22.08.2026 &amp; SUN 23.08.2026</div>
+  <!-- ===== TAB: HOME ===== -->
+  <section class="tab-panel active" data-tab="home" id="tabHome">
+    <header class="hero">
+      <div class="eyebrow">Koi Tsunjatta — 11th Single</div>
+      <h1>Let me know!<span class="sub">HANDSHAKE PLANNER</span></h1>
+      <div class="meta">
+        <div>Avenue A, G Floor — MBK Center</div>
+        <div>SAT 22.08.2026 &amp; SUN 23.08.2026</div>
+      </div>
+    </header>
+
+    <div class="crack">
+      <svg viewBox="0 0 1000 24" preserveAspectRatio="none">
+        <polyline points="0,12 120,12 145,4 175,19 210,12 400,12 430,21 460,5 500,12 700,12 725,3 760,17 800,12 1000,12"
+          fill="none" stroke="#24413a" stroke-width="1.5"/>
+      </svg>
     </div>
-  </header>
 
-  <div class="crack">
-    <svg viewBox="0 0 1000 24" preserveAspectRatio="none">
-      <polyline points="0,12 120,12 145,4 175,19 210,12 400,12 430,21 460,5 500,12 700,12 725,3 760,17 800,12 1000,12"
-        fill="none" stroke="#24413a" stroke-width="1.5"/>
-    </svg>
-  </div>
+    <div id="homeStatCard"></div>
 
-  <h2 class="section-title">1. เลือกทีมและเมมเบอร์</h2>
-  <p class="section-desc">เลือกทีม → แตะชื่อเมมเบอร์ → หน้าเดียวจะโชว์ทั้งวัน SAT และวัน SUN ให้เลือกจำนวนรอบพร้อมกัน แล้วกด "บันทึก" ครั้งเดียวจบ</p>
+    <footer>
+      <b>SP 1</b> = รอบพิเศษ เริ่ม 19:30 &nbsp;·&nbsp; <b>SP 2</b> = รอบพิเศษ เริ่ม 20:30<br>
+      เวลาปิดเลน (Lane Close) คือเวลาที่หยุดรับคิวเข้าเลน ก่อนรอบจะสิ้นสุด 15 นาที<br>
+      ข้อมูลรอบและรูปที่บันทึกในหน้านี้เป็นการวางแผนส่วนตัว ไม่ใช่การจองคิวจริง และเป็นข้อมูลส่วนตัวของคุณเท่านั้น
+    </footer>
+  </section>
 
-  <div class="team-tabs" id="teamTabs"></div>
+  <!-- ===== TAB: MEMBERS ===== -->
+  <section class="tab-panel" data-tab="members" id="tabMembers">
+    <h2 class="section-title">สมาชิกทั้งหมด</h2>
+    <p class="section-desc">เลือกทีม แล้วแตะรูปเมมเบอร์เพื่อเปิดหน้าต่างเลือกรอบได้ทันที</p>
+    <div class="team-tabs" id="membersTeamTabs"></div>
+    <div class="members-grid" id="membersGrid"></div>
+  </section>
 
-  <div class="picker" id="picker"></div>
+  <!-- ===== TAB: TABLE ===== -->
+  <section class="tab-panel" data-tab="table" id="tabTable">
+    <h2 class="section-title">ตารางรอบ</h2>
+    <p class="section-desc">แตะที่ช่องไหนก็เพิ่มจำนวนบัตรของคุณได้ทันที ไม่ต้องไปที่ Planner หรือ Members</p>
+    <div class="team-tabs" id="tableTeamTabs"></div>
+    <div class="day-tabs" id="tableDayTabs"></div>
+    <div class="xt-legend"><span class="xt-legend-dot"></span> แตะช่องเลนเพื่อ <b>+1 ใบ</b> · แตะเลข ✕ ตัวเล็กเพื่อ −1 ใบ</div>
+    <div class="cross-table-wrap" id="crossTableHost"></div>
+  </section>
 
+  <!-- ===== TAB: HANDSHAKE PLANNER ===== -->
+  <section class="tab-panel" data-tab="planner" id="tabPlanner">
+    <h2 class="section-title">เลือกทีมและเมมเบอร์</h2>
+    <p class="section-desc">เลือกทีม → แตะชื่อเมมเบอร์ → หน้าเดียวจะโชว์ทั้งวัน SAT และวัน SUN ให้เลือกจำนวนรอบพร้อมกัน แล้วกด "บันทึก" ครั้งเดียวจบ</p>
+    <div class="team-tabs" id="teamTabs"></div>
+    <div class="picker" id="picker"></div>
+  </section>
 
-  <h2 class="section-title">2. สรุปรายการที่บันทึกไว้</h2>
-  <p class="section-desc">รวมทุกทีม ทุกวัน ทุกเมมเบอร์ และทุกรอบที่คุณกดบันทึกไว้แล้ว</p>
-  <div class="sort-tabs" id="sortTabs"></div>
-  <div class="summary-wrap" id="summaryHost"><div class="loading-note">กำลังโหลดข้อมูล…</div></div>
-
-  <footer>
-    <b>SP 1</b> = รอบพิเศษ เริ่ม 19:30 &nbsp;·&nbsp; <b>SP 2</b> = รอบพิเศษ เริ่ม 20:30<br>
-    เวลาปิดเลน (Lane Close) คือเวลาที่หยุดรับคิวเข้าเลน ก่อนรอบจะสิ้นสุด 15 นาที<br>
-    ข้อมูลรอบและรูปที่บันทึกในหน้านี้เป็นการวางแผนส่วนตัว ไม่ใช่การจองคิวจริง และเป็นข้อมูลส่วนตัวของคุณเท่านั้น
-  </footer>
+  <!-- ===== TAB: PROFILE ===== -->
+  <section class="tab-panel" data-tab="profile" id="tabProfile">
+    <h2 class="section-title">สรุปรายการที่บันทึกไว้</h2>
+    <p class="section-desc">รวมทุกทีม ทุกวัน ทุกเมมเบอร์ และทุกรอบที่คุณกดบันทึกไว้แล้ว</p>
+    <div class="sort-tabs" id="sortTabs"></div>
+    <div class="summary-wrap" id="summaryHost"><div class="loading-note">กำลังโหลดข้อมูล…</div></div>
+  </section>
 
 </div>
+
+<nav class="bottom-nav" id="bottomNav"></nav>
 
 <script>
 /* โครงสร้างข้อมูล: TEAMS[team].days[dateKey] = { dateLabel, weekday, rounds, special, members } */
@@ -619,10 +797,18 @@ let draft = {};    // draft[day] = { slotKey: qty }  — both days edited togeth
 let cart = {};      // cart[team][day][name] = { slotKey: qty }
 let photos = {};    // photos[name] = dataURL (shared across teams/days, names don't collide)
 let summarySortMode = "team";  // 'team' | 'member' | 'date'
+let tableActiveDay = null;     // set on init once TEAMS is known
 
 const teamTabsEl = document.getElementById('teamTabs');
 const sortTabsEl = document.getElementById('sortTabs');
 const picker = document.getElementById('picker');
+const membersTeamTabsEl = document.getElementById('membersTeamTabs');
+const membersGridEl = document.getElementById('membersGrid');
+const homeStatCardEl = document.getElementById('homeStatCard');
+const bottomNavEl = document.getElementById('bottomNav');
+const tableTeamTabsEl = document.getElementById('tableTeamTabs');
+const tableDayTabsEl = document.getElementById('tableDayTabs');
+const crossTableHostEl = document.getElementById('crossTableHost');
 let memberModalOverlay = null;
 function getMemberModalOverlay(){
   if(!memberModalOverlay){
@@ -735,18 +921,21 @@ function compressImage(file){
 }
 
 function renderTeamTabs(){
-  teamTabsEl.innerHTML = '';
-  TEAM_ORDER.forEach(team=>{
-    const t = TEAMS[team];
-    const count = teamTotal(team);
-    const tab = document.createElement('div');
-    tab.className = 'team-tab' + (activeTeam===team ? ' active':'');
-    tab.innerHTML =
-      (count>0 ? '<span class="tt-count">'+count+' ใบ</span>' : '') +
-      '<div class="tt-label">'+t.label+'</div>' +
-      '<div class="tt-sub">SAT-SUN · MBK Center</div>';
-    tab.addEventListener('click', ()=> switchTeam(team));
-    teamTabsEl.appendChild(tab);
+  const targets = [teamTabsEl, membersTeamTabsEl, tableTeamTabsEl].filter(Boolean);
+  targets.forEach(target=>{
+    target.innerHTML = '';
+    TEAM_ORDER.forEach(team=>{
+      const t = TEAMS[team];
+      const count = teamTotal(team);
+      const tab = document.createElement('div');
+      tab.className = 'team-tab' + (activeTeam===team ? ' active':'');
+      tab.innerHTML =
+        (count>0 ? '<span class="tt-count">'+count+' ใบ</span>' : '') +
+        '<div class="tt-label">'+t.label+'</div>' +
+        '<div class="tt-sub">SAT-SUN · MBK Center</div>';
+      tab.addEventListener('click', ()=> switchTeam(team));
+      target.appendChild(tab);
+    });
   });
 }
 
@@ -769,6 +958,232 @@ function renderPicker(){
     });
     picker.appendChild(chip);
   });
+}
+
+function renderMembersGrid(){
+  if(!membersGridEl) return;
+  membersGridEl.innerHTML = '';
+  const firstDay = dayKeysFor(activeTeam)[0];
+  const members = dayData(activeTeam, firstDay).members;
+  Object.keys(members).forEach(name=>{
+    const count = cartCountMember(activeTeam, name);
+    const card = document.createElement('div');
+    card.className = 'member-card';
+    card.innerHTML =
+      '<div class="mc-photo" style="background:'+(photos[name]?'#132923':colorFor(name))+'">'+avatarInner(name, photos[name])+'</div>'+
+      '<div class="mc-name">'+name+'</div>'+
+      (count>0 ? '<div class="mc-badge">'+count+' ใบ</div>' : '');
+    card.addEventListener('click', ()=> openEditor(activeTeam, name));
+    membersGridEl.appendChild(card);
+  });
+}
+
+function renderTableDayTabs(){
+  if(!tableDayTabsEl) return;
+  const days = dayKeysFor(activeTeam);
+  if(!tableActiveDay || !days.includes(tableActiveDay)) tableActiveDay = days[0];
+  tableDayTabsEl.innerHTML = '';
+  days.forEach(day=>{
+    const d = dayData(activeTeam, day);
+    const tab = document.createElement('div');
+    tab.className = 'day-tab' + (tableActiveDay===day ? ' active':'');
+    tab.textContent = d.weekday+' · '+d.dateLabel;
+    tab.addEventListener('click', ()=>{
+      tableActiveDay = day;
+      renderTableDayTabs();
+      renderCrossTable();
+    });
+    tableDayTabsEl.appendChild(tab);
+  });
+}
+
+function renderCrossTable(){
+  if(!crossTableHostEl) return;
+  const team = activeTeam;
+  const days = dayKeysFor(team);
+  if(!tableActiveDay || !days.includes(tableActiveDay)) tableActiveDay = days[0];
+  const day = tableActiveDay;
+  const d = dayData(team, day);
+  const memberNames = Object.keys(d.members);
+
+  // build ordered column list: rounds in order, then SP1/SP2 if present anywhere that day
+  const roundCols = Object.keys(d.rounds).map(r=>({key:'r'+r, r, isSpecial:false}));
+  const specialKeys = new Set();
+  memberNames.forEach(name=>{ if(d.members[name].special) specialKeys.add(d.members[name].special); });
+  const specialCols = ['SP1','SP2'].filter(k=>specialKeys.has(k)).map(k=>({key:k, isSpecial:true}));
+  const cols = roundCols.concat(specialCols);
+
+  let html = '<table class="cross-table"><thead><tr>';
+  html += '<th class="xt-corner"></th>';
+  cols.forEach(c=>{
+    if(c.isSpecial){
+      const sp = d.special[c.key];
+      html += '<th class="xt-colhead special"><div class="xt-r">'+c.key+'</div><div class="xt-t">'+sp.time+' น.</div></th>';
+    } else {
+      const info = d.rounds[c.r];
+      html += '<th class="xt-colhead"><div class="xt-r">R'+c.r+'</div><div class="xt-t">'+info.time+'</div></th>';
+    }
+  });
+  html += '</tr></thead><tbody>';
+
+  memberNames.forEach(name=>{
+    const total = cartCountDay(team, day, name);
+    html += '<tr>';
+    html += '<td class="xt-name-cell">';
+    html += '<span class="avatar sm" style="background:'+(photos[name]?'#132923':colorFor(name))+'">'+avatarInner(name, photos[name])+'</span>';
+    html += '<span class="xt-nm">'+name+'</span>';
+    if(total>0) html += '<span class="xt-total">'+total+' ใบ</span>';
+    html += '</td>';
+
+    const m = d.members[name];
+    cols.forEach(c=>{
+      if(c.isSpecial){
+        if(m.special === c.key){
+          const qty = (cart[team] && cart[team][day] && cart[team][day][name] && cart[team][day][name][c.key]) || 0;
+          html += renderXtCell(team, day, name, c.key, true, qty, c.key);
+        } else {
+          html += '<td class="xt-cell-wrap"><div class="xt-empty-cell">—</div></td>';
+        }
+      } else {
+        const found = m.rounds.find(x=>x.r===Number(c.r));
+        if(found){
+          const key = 'r'+c.r;
+          const qty = (cart[team] && cart[team][day] && cart[team][day][name] && cart[team][day][name][key]) || 0;
+          html += renderXtCell(team, day, name, key, false, qty, 'L'+found.lane);
+        } else {
+          html += '<td class="xt-cell-wrap"><div class="xt-empty-cell">—</div></td>';
+        }
+      }
+    });
+    html += '</tr>';
+  });
+  html += '</tbody></table>';
+  crossTableHostEl.innerHTML = html;
+
+  crossTableHostEl.querySelectorAll('.xt-cell').forEach(cell=>{
+    cell.addEventListener('click', (e)=>{
+      if(e.target.closest('.xt-minus')) return;
+      quickAdjustQty(cell.dataset.team, cell.dataset.day, cell.dataset.name, cell.dataset.key, cell.dataset.special==='1', 1);
+    });
+  });
+  crossTableHostEl.querySelectorAll('.xt-minus').forEach(btn=>{
+    btn.addEventListener('click', (e)=>{
+      e.stopPropagation();
+      const cell = btn.closest('.xt-cell');
+      quickAdjustQty(cell.dataset.team, cell.dataset.day, cell.dataset.name, cell.dataset.key, cell.dataset.special==='1', -1);
+    });
+  });
+}
+
+function renderXtCell(team, day, name, key, isSpecial, qty, badgeLabel){
+  let html = '<td class="xt-cell-wrap">';
+  html += '<div class="xt-cell'+(isSpecial?' xt-special':'')+(qty>0?' xt-has-qty':'')+'" data-team="'+team+'" data-day="'+day+'" data-name="'+name+'" data-key="'+key+'" data-special="'+(isSpecial?1:0)+'">';
+  if(qty>0){
+    html += '<div class="xt-minus">✕</div>';
+  }
+  html += '<div class="xt-lane">'+badgeLabel+'</div>';
+  html += '<div class="xt-qtynum">'+qty+'</div>';
+  html += '</div></td>';
+  return html;
+}
+
+// direct add/remove from the cross-table, without opening the member popup.
+// reuses the same special-round exclusivity rule (1 member per day, across teams) via findSpecialHolder.
+async function quickAdjustQty(team, day, name, key, isSpecial, delta){
+  const current = (cart[team] && cart[team][day] && cart[team][day][name] && cart[team][day][name][key]) || 0;
+  let newQty = Math.max(0, current + delta);
+  if(isSpecial) newQty = Math.min(SPECIAL_MAX, newQty);
+
+  if(isSpecial && current === 0 && newQty > 0){
+    const holder = findSpecialHolder(day, team, name);
+    if(holder){
+      const choice = await showSpecialConflictModal(day, holder.team, holder.name, team, name);
+      if(choice === 'keep') return;
+      const holderSpecialKey = dayData(holder.team, day).members[holder.name].special;
+      if(cart[holder.team] && cart[holder.team][day] && cart[holder.team][day][holder.name]){
+        delete cart[holder.team][day][holder.name][holderSpecialKey];
+        if(Object.keys(cart[holder.team][day][holder.name]).length === 0){
+          delete cart[holder.team][day][holder.name];
+        }
+      }
+    }
+  }
+
+  if(!cart[team]) cart[team] = {};
+  if(!cart[team][day]) cart[team][day] = {};
+  if(newQty === 0){
+    if(cart[team][day][name]){
+      delete cart[team][day][name][key];
+      if(Object.keys(cart[team][day][name]).length === 0) delete cart[team][day][name];
+    }
+  } else {
+    if(!cart[team][day][name]) cart[team][day][name] = {};
+    cart[team][day][name][key] = newQty;
+  }
+  await persist();
+
+  renderTeamTabs();
+  renderPicker();
+  renderMembersGrid();
+  renderHomeStats();
+  renderCrossTable();
+  renderSortTabs();
+  renderSummary();
+  if(delta>0) showToast(name+' +1 ใบ ('+badgeForToast(key)+')');
+}
+function badgeForToast(key){
+  return key.startsWith('r') ? 'Round '+key.slice(1) : key;
+}
+
+function renderHomeStats(){
+  if(!homeStatCardEl) return;
+  const total = grandTotal();
+  let html = '<div class="home-stat-card">';
+  html += '<div class="hs-label">รวมทั้งหมดที่บันทึกไว้</div>';
+  html += '<div class="hs-num">'+total+' <span style="font-size:20px;color:var(--ink-faint);">ใบ</span></div>';
+  html += '<div class="hs-rows">';
+  TEAM_ORDER.forEach(team=>{
+    html += '<div class="hs-row"><span>'+TEAMS[team].label+'</span><b>'+teamTotal(team)+' ใบ</b></div>';
+  });
+  html += '</div>';
+  html += '<button class="home-cta" id="homeCtaBtn">ไปเลือกรอบที่ Handshake Planner →</button>';
+  html += '</div>';
+  homeStatCardEl.innerHTML = html;
+  document.getElementById('homeCtaBtn').addEventListener('click', ()=> switchTab('planner'));
+}
+
+const NAV_ITEMS = [
+  {id:'home', label:'Home', icon:'<path d="M3 11.5 12 4l9 7.5"/><path d="M5 10v9a1 1 0 0 0 1 1h4v-6h4v6h4a1 1 0 0 0 1-1v-9"/>'},
+  {id:'members', label:'Members', icon:'<circle cx="9" cy="8" r="3"/><path d="M2 20c0-3 3-5 7-5s7 2 7 5"/><circle cx="17" cy="9" r="2.3"/><path d="M16 15c2.8.3 5 2 5 5"/>'},
+  {id:'table', label:'Table', icon:'<rect x="3" y="4" width="18" height="16" rx="2"/><path d="M3 9h18M3 15h18M9 4v16M15 4v16"/>'},
+  {id:'planner', label:'Planner', icon:'<rect x="3" y="5" width="18" height="16" rx="2"/><path d="M3 10h18"/><path d="M8 3v4M16 3v4"/><path d="m9 15 2 2 4-4"/>'},
+  {id:'profile', label:'Profile', icon:'<circle cx="12" cy="8" r="4"/><path d="M4 20c0-4 4-6 8-6s8 2 8 6"/>'},
+];
+let activeTab = 'home';
+
+function renderBottomNav(){
+  bottomNavEl.innerHTML = '';
+  NAV_ITEMS.forEach(item=>{
+    const btn = document.createElement('button');
+    btn.className = 'nav-btn' + (activeTab===item.id ? ' active':'');
+    btn.innerHTML = '<svg viewBox="0 0 24 24">'+item.icon+'</svg><span>'+item.label+'</span>';
+    btn.addEventListener('click', ()=> switchTab(item.id));
+    bottomNavEl.appendChild(btn);
+  });
+}
+
+function switchTab(tab){
+  activeTab = tab;
+  document.querySelectorAll('.tab-panel').forEach(p=>{
+    p.classList.toggle('active', p.dataset.tab === tab);
+  });
+  renderBottomNav();
+  window.scrollTo(0, 0);
+  if(tab === 'home') renderHomeStats();
+  if(tab === 'members') renderMembersGrid();
+  if(tab === 'table'){ renderTableDayTabs(); renderCrossTable(); }
+  if(tab === 'planner'){ renderPicker(); }
+  if(tab === 'profile'){ renderSortTabs(); renderSummary(); }
 }
 
 function renderDaySection(team, day, name){
@@ -829,6 +1244,21 @@ function findSpecialHolder(day, excludeTeam, excludeName){
     }
   }
   return null;
+}
+
+let toastTimer = null;
+function showToast(message){
+  let el = document.getElementById('globalToast');
+  if(!el){
+    el = document.createElement('div');
+    el.id = 'globalToast';
+    el.className = 'toast';
+    document.body.appendChild(el);
+  }
+  el.textContent = message;
+  el.classList.add('show');
+  clearTimeout(toastTimer);
+  toastTimer = setTimeout(()=>{ el.classList.remove('show'); }, 2000);
 }
 
 function showAlertModal(title, message){
@@ -981,7 +1411,6 @@ function renderEditor(){
   html += '<div class="editor-actions">';
   html += '<button class="btn btn-save" id="saveBtn">บันทึกรอบของ '+name+' (ทั้ง 2 วัน)</button>';
   html += '<button class="btn btn-ghost" id="cancelBtn">ยกเลิก</button>';
-  html += '<span class="save-flash" id="saveFlash">บันทึกแล้ว ✓</span>';
   html += '</div>';
   html += '</div>';
   overlay.innerHTML = html;
@@ -1049,12 +1478,8 @@ function renderEditor(){
       }
     });
     await persist();
-    const flash = document.getElementById('saveFlash');
-    flash.classList.add('show');
-    setTimeout(()=>{ flash.classList.remove('show'); }, 1400);
-    renderTeamTabs();
-    renderPicker();
-    renderSummary();
+    closeEditor();
+    showToast('บันทึกรอบของ '+name+' แล้ว ✓');
   });
 }
 
@@ -1345,9 +1770,14 @@ function bindSummaryHandlers(){
 function renderAll(){
   renderTeamTabs();
   renderPicker();
+  renderMembersGrid();
+  renderHomeStats();
   renderEditor();
+  renderTableDayTabs();
+  renderCrossTable();
   renderSortTabs();
   renderSummary();
+  renderBottomNav();
 }
 
 (async function init(){
