@@ -626,6 +626,72 @@
   }
   .home-cta:hover{filter:brightness(1.08);transform:translateY(-1px);}
 
+  /* ---------- home live schedule ---------- */
+  .sched-daytabs{display:flex;gap:8px;margin-bottom:14px;}
+  .sched-daytab{
+    flex:1;padding:12px 14px;background:var(--glass-1);border:1px solid var(--glass-border-soft);
+    border-radius:var(--r-md);cursor:pointer;transition:all .18s ease;text-align:center;
+  }
+  .sched-daytab:hover{background:var(--glass-2);border-color:var(--glass-border);}
+  .sched-daytab.active{
+    background:linear-gradient(160deg, rgba(94,232,204,0.28), rgba(94,232,204,0.08));
+    border-color:rgba(94,232,204,0.55);box-shadow:0 8px 22px rgba(94,232,204,0.18), var(--glass-hi);
+  }
+  .sched-daytab .sdt-week{font-family:'Cormorant Garamond',serif;font-weight:700;font-style:italic;font-size:17px;color:var(--ink);}
+  .sched-daytab.active .sdt-week{color:var(--teal-soft);}
+  .sched-daytab .sdt-date{font-size:10.5px;color:var(--ink-faint);letter-spacing:.05em;margin-top:2px;}
+  .sched-daytab .sdt-show{
+    display:inline-block;margin-top:6px;padding:2px 9px;border-radius:var(--r-pill);font-size:9.5px;font-weight:800;
+    letter-spacing:.04em;
+  }
+  .sched-daytab .sdt-show.has-show{background:rgba(255,199,115,0.16);border:1px solid rgba(255,199,115,0.35);color:var(--amber);}
+  .sched-daytab .sdt-show.no-show{background:var(--glass-1);border:1px solid var(--glass-border-soft);color:var(--ink-faint);}
+
+  .sched-card{
+    background:var(--glass-1);border:1px solid var(--glass-border-soft);border-radius:var(--r-lg);
+    box-shadow:var(--glass-shadow), var(--glass-hi);padding:22px 20px;margin-bottom:18px;
+  }
+  .sched-card-head{display:flex;align-items:center;justify-content:space-between;margin-bottom:16px;}
+  .sched-card-title{font-family:'Cormorant Garamond',serif;font-weight:700;font-style:italic;font-size:20px;color:var(--ink);}
+  .sched-now-pill{
+    display:flex;align-items:center;gap:6px;font-size:10.5px;color:var(--ink-faint);letter-spacing:.03em;
+  }
+  .sched-list{display:flex;flex-direction:column;gap:10px;}
+  .sched-item{
+    position:relative;display:flex;align-items:center;gap:14px;padding:14px 16px;border-radius:var(--r-md);
+    background:var(--glass-1);border:1px solid var(--glass-border-soft);transition:all .18s ease;
+  }
+  .sched-item.si-live{
+    background:linear-gradient(120deg, rgba(255,95,126,0.14), rgba(255,95,126,0.04));
+    border-color:rgba(255,95,126,0.45);box-shadow:0 8px 22px rgba(255,95,126,0.15);
+  }
+  .sched-item.si-ended{opacity:.45;}
+  .si-icon{
+    flex:0 0 auto;width:38px;height:38px;border-radius:50%;display:flex;align-items:center;justify-content:center;
+    background:var(--glass-2);border:1px solid var(--glass-border-soft);
+  }
+  .sched-item.si-live .si-icon{background:rgba(255,95,126,0.18);border-color:rgba(255,95,126,0.4);}
+  .si-icon svg{width:18px;height:18px;stroke:var(--ink-dim);fill:none;stroke-width:1.8;}
+  .sched-item.si-live .si-icon svg{stroke:var(--crimson-soft);}
+  .si-body{flex:1 1 auto;min-width:0;}
+  .si-title{font-weight:800;font-size:14.5px;color:var(--ink);}
+  .si-time{font-size:12px;color:var(--ink-faint);margin-top:2px;letter-spacing:.02em;}
+  .si-status{flex:0 0 auto;display:flex;align-items:center;gap:6px;}
+  .si-status-label{font-size:10.5px;font-weight:800;letter-spacing:.05em;text-transform:uppercase;}
+  .si-status.status-live .si-status-label{color:var(--crimson-soft);}
+  .si-status.status-upcoming .si-status-label{color:var(--ink-faint);}
+  .si-status.status-ended .si-status-label{color:var(--ink-faint);}
+  .si-live-dot{
+    width:8px;height:8px;border-radius:50%;background:var(--crimson-bright);
+    box-shadow:0 0 0 rgba(255,95,126,0.5);animation:pulseDot 1.6s infinite;
+  }
+  @keyframes pulseDot{
+    0%{box-shadow:0 0 0 0 rgba(255,95,126,0.55);}
+    70%{box-shadow:0 0 0 9px rgba(255,95,126,0);}
+    100%{box-shadow:0 0 0 0 rgba(255,95,126,0);}
+  }
+  .sched-note{font-size:11.5px;color:var(--ink-faint);margin-top:14px;line-height:1.6;padding-top:12px;border-top:1px solid var(--glass-border-soft);}
+
   @media(max-width:520px){
     .slot-grid{grid-template-columns:repeat(auto-fill,minmax(150px,1fr));}
     .summary-total{flex-direction:column;align-items:flex-start;gap:6px;}
@@ -689,6 +755,9 @@
           fill="none" stroke="#24413a" stroke-width="1.5"/>
       </svg>
     </div>
+
+    <div class="sched-daytabs" id="homeSchedDayTabs"></div>
+    <div id="homeScheduleHost"></div>
 
     <div id="homeStatCard"></div>
 
@@ -853,6 +922,36 @@ const TEAMS = {
   }
 };
 const TEAM_ORDER = ["TEAM_C","TRAINEE"];
+
+/* ตารางงานหลัก (Event Agenda) — ใช้แสดงในหน้า Home แบบ Live ตามเวลาจริง
+   เวลาทั้งหมดอ้างอิงโซนเวลาไทย (UTC+7) และอิงจากรอบแรก/รอบพิเศษสุดท้ายของแต่ละวันใน TEAMS */
+const EVENT_SCHEDULE = {
+  "2026-08-22": {
+    weekday: "SAT",
+    dateLabel: "22.08.2026",
+    hasShow: true,
+    items: [
+      { id:"gate",      label:"Gate Open",       time:"10:00",         start:"10:00", end:"11:30", icon:"gate" },
+      { id:"show",      label:"Show Time",       time:"11:30 - 12:15", start:"11:30", end:"12:15", icon:"show" },
+      { id:"handshake", label:"Handshake Event", time:"14:00 ~",       start:"14:00", end:"21:00", icon:"handshake" },
+    ]
+  },
+  "2026-08-23": {
+    weekday: "SUN",
+    dateLabel: "23.08.2026",
+    hasShow: false,
+    items: [
+      { id:"gate",      label:"Gate Open",       time:"10:00", start:"10:00", end:"11:00", icon:"gate" },
+      { id:"handshake", label:"Handshake Event", time:"11:00 ~", start:"11:00", end:"21:00", icon:"handshake" },
+    ]
+  }
+};
+const SCHED_DAY_ORDER = ["2026-08-22","2026-08-23"];
+const SCHED_ICONS = {
+  gate: '<path d="M4 21V7l8-4 8 4v14"/><path d="M9 21v-6h6v6"/><path d="M4 11h16"/>',
+  show: '<path d="M9 8v8l7-4-7-4Z"/><circle cx="12" cy="12" r="9"/>',
+  handshake: '<path d="M8 12l2.5 2.5L15 10"/><path d="M3 12h3l2-2 3 3 2-2 2 2h3"/>',
+};
 const AVATAR_COLORS = ["#4fe0c2","#e8a34f","#c23a54","#8a2038","#2c6a5c","#a9beb7","#6d8880","#2ea88c","#e0975f","#5f9be0"];
 
 /* รูปเมมเบอร์ที่ฝังไว้ในไฟล์ตั้งแต่ตอนสร้าง — อัปโหลดรูปใหม่ในหน้าเว็บได้ตลอด จะเขียนทับตัวนี้ */
@@ -917,6 +1016,9 @@ const picker = document.getElementById('picker');
 const membersTeamTabsEl = document.getElementById('membersTeamTabs');
 const membersGridEl = document.getElementById('membersGrid');
 const homeStatCardEl = document.getElementById('homeStatCard');
+const homeSchedDayTabsEl = document.getElementById('homeSchedDayTabs');
+const homeScheduleHostEl = document.getElementById('homeScheduleHost');
+let activeSchedDay = null; // set on first render (today's event day if within event window, else SAT)
 const bottomNavEl = document.getElementById('bottomNav');
 const tableTeamTabsEl = document.getElementById('tableTeamTabs');
 const tableDayTabsEl = document.getElementById('tableDayTabs');
@@ -1380,6 +1482,114 @@ async function quickAdjustOneshot(team, day, name, key, delta){
   if(delta>0) showToast(name+' 🎥 1-Shot Video +1 ('+badgeForToast(key)+' · 3 ใบ)');
 }
 
+/* ---------- home live schedule (Event Agenda) ---------- */
+function schedDateTime(dayKey, hhmm){
+  // สร้าง Date จากวันที่ + เวลา โดยอ้างอิงโซนเวลาไทย (UTC+7) เสมอ ไม่ว่าเครื่องผู้ใช้จะตั้งโซนไหน
+  return new Date(dayKey+'T'+hhmm+':00+07:00');
+}
+
+function getSchedItemStatus(dayKey, item, now){
+  const start = schedDateTime(dayKey, item.start);
+  const end = schedDateTime(dayKey, item.end);
+  if(now < start) return 'upcoming';
+  if(now >= start && now < end) return 'live';
+  return 'ended';
+}
+
+function pickDefaultSchedDay(now){
+  // ถ้าตอนนี้อยู่ในช่วงวันงานวันไหน ให้เลือกวันนั้น ไม่งั้น default เป็นวันแรก (SAT)
+  for(const dayKey of SCHED_DAY_ORDER){
+    const dayStart = schedDateTime(dayKey, '00:00');
+    const dayEnd = schedDateTime(dayKey, '23:59');
+    if(now >= dayStart && now <= dayEnd) return dayKey;
+  }
+  return SCHED_DAY_ORDER[0];
+}
+
+function renderHomeSchedDayTabs(){
+  if(!homeSchedDayTabsEl) return;
+  const now = new Date();
+  if(!activeSchedDay) activeSchedDay = pickDefaultSchedDay(now);
+  let html = '';
+  SCHED_DAY_ORDER.forEach(dayKey=>{
+    const d = EVENT_SCHEDULE[dayKey];
+    const active = dayKey === activeSchedDay;
+    html += '<div class="sched-daytab'+(active?' active':'')+'" data-day="'+dayKey+'">';
+    html += '<div class="sdt-week">'+d.weekday+'</div>';
+    html += '<div class="sdt-date">'+d.dateLabel+'</div>';
+    html += '<div class="sdt-show '+(d.hasShow?'has-show':'no-show')+'">'+(d.hasShow?'มีโชว์':'ไม่มีโชว์')+'</div>';
+    html += '</div>';
+  });
+  homeSchedDayTabsEl.innerHTML = html;
+  homeSchedDayTabsEl.querySelectorAll('.sched-daytab').forEach(el=>{
+    el.addEventListener('click', ()=>{
+      activeSchedDay = el.dataset.day;
+      renderHomeSchedDayTabs();
+      renderHomeSchedule();
+    });
+  });
+}
+
+function renderHomeSchedule(){
+  if(!homeScheduleHostEl) return;
+  if(!activeSchedDay) activeSchedDay = pickDefaultSchedDay(new Date());
+  const dayKey = activeSchedDay;
+  const day = EVENT_SCHEDULE[dayKey];
+  const now = new Date();
+
+  let html = '<div class="sched-card">';
+  html += '<div class="sched-card-head">';
+  html += '<div class="sched-card-title">'+day.weekday+' '+day.dateLabel+' — Event Agenda</div>';
+  html += '<div class="sched-now-pill">'+nowClockLabel(now)+'</div>';
+  html += '</div>';
+  html += '<div class="sched-list">';
+
+  day.items.forEach(item=>{
+    const status = getSchedItemStatus(dayKey, item, now);
+    const icon = SCHED_ICONS[item.icon] || SCHED_ICONS.handshake;
+    html += '<div class="sched-item si-'+status+'">';
+    html += '<div class="si-icon"><svg viewBox="0 0 24 24">'+icon+'</svg></div>';
+    html += '<div class="si-body"><div class="si-title">'+item.label+'</div><div class="si-time">'+item.time+'</div></div>';
+    html += '<div class="si-status status-'+status+'">';
+    if(status==='live'){
+      html += '<span class="si-live-dot"></span><span class="si-status-label">Live</span>';
+    } else if(status==='upcoming'){
+      html += '<span class="si-status-label">Upcoming</span>';
+    } else {
+      html += '<span class="si-status-label">จบแล้ว</span>';
+    }
+    html += '</div>';
+    html += '</div>';
+  });
+
+  html += '</div>'; // sched-list
+  html += '<div class="sched-note">';
+  if(day.hasShow){
+    html += 'วันนี้มีโชว์ก่อน Handshake Event · แสดงสถานะแบบเรียลไทม์ตามเวลาปัจจุบัน';
+  } else {
+    html += 'วันนี้ไม่มีโชว์ เริ่ม Handshake Event ได้เลยหลัง Gate Open · แสดงสถานะแบบเรียลไทม์ตามเวลาปัจจุบัน';
+  }
+  html += '</div>';
+  html += '</div>'; // sched-card
+
+  homeScheduleHostEl.innerHTML = html;
+}
+
+function nowClockLabel(now){
+  const bkk = new Date(now.toLocaleString('en-US', {timeZone:'Asia/Bangkok'}));
+  const hh = String(bkk.getHours()).padStart(2,'0');
+  const mm = String(bkk.getMinutes()).padStart(2,'0');
+  return 'ตอนนี้ '+hh+':'+mm+' น.';
+}
+
+let homeSchedTimer = null;
+function startHomeSchedTimer(){
+  if(homeSchedTimer) return;
+  homeSchedTimer = setInterval(()=>{
+    if(activeTab === 'home'){ renderHomeSchedDayTabs(); renderHomeSchedule(); }
+  }, 30000);
+}
+
 function renderHomeStats(){
   if(!homeStatCardEl) return;
   const total = grandTotal();
@@ -1424,7 +1634,7 @@ function switchTab(tab){
   });
   renderBottomNav();
   window.scrollTo(0, 0);
-  if(tab === 'home') renderHomeStats();
+  if(tab === 'home'){ renderHomeSchedDayTabs(); renderHomeSchedule(); renderHomeStats(); }
   if(tab === 'members') renderMembersGrid();
   if(tab === 'table'){ renderTableDayTabs(); renderCrossTable(); }
   if(tab === 'planner'){ renderPicker(); }
@@ -2100,6 +2310,8 @@ function renderAll(){
   renderTeamTabs();
   renderPicker();
   renderMembersGrid();
+  renderHomeSchedDayTabs();
+  renderHomeSchedule();
   renderHomeStats();
   renderEditor();
   renderTableDayTabs();
@@ -2112,6 +2324,7 @@ function renderAll(){
 (async function init(){
   await loadState();
   renderAll();
+  startHomeSchedTimer();
   if(crossTableHostEl) attachPinchZoom(crossTableHostEl);
 })();
 </script>
