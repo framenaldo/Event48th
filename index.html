@@ -28,6 +28,7 @@
     --r-md: 18px;
     --r-sm: 14px;
     --r-pill: 999px;
+    --xt-line: rgba(148,255,230,0.22);
   }
   *{box-sizing:border-box;}
   html,body{margin:0;padding:0;}
@@ -235,6 +236,37 @@
   .step-input:focus{outline:none;background:rgba(94,232,204,0.10);}
   .qty-cap{font-size:10px;color:var(--ink-faint);margin-top:6px;letter-spacing:.02em;}
 
+  .oneshot-row{
+    margin-top:12px;padding-top:10px;border-top:1px solid var(--glass-border-soft);
+  }
+  .oneshot-row.active{}
+  .oneshot-head{display:flex;align-items:center;gap:7px;margin-bottom:8px;}
+  .oneshot-icon{
+    width:22px;height:22px;border-radius:7px;display:flex;align-items:center;justify-content:center;
+    background:var(--glass-2);border:1px solid var(--glass-border-soft);font-size:11px;flex:0 0 auto;
+    transition:all .18s ease;
+  }
+  .oneshot-row.active .oneshot-icon{
+    background:linear-gradient(135deg, var(--amber), #e08a3a);border-color:transparent;
+    box-shadow:0 4px 14px rgba(255,199,115,0.35);
+  }
+  .oneshot-label{font-size:11.5px;color:var(--ink-dim);font-weight:700;}
+  .oneshot-row.active .oneshot-label{color:var(--ink);}
+  .oneshot-controls{display:flex;align-items:center;gap:10px;flex-wrap:wrap;}
+  .oneshot-stepper{
+    display:flex;align-items:center;border:1px solid var(--glass-border-soft);border-radius:var(--r-pill);
+    background:var(--glass-1);overflow:hidden;
+  }
+  .oneshot-stepper .step-btn{width:26px;height:26px;font-size:14px;}
+  .oneshot-stepper .oneshot-input{
+    width:34px;height:26px;text-align:center;font-weight:800;font-size:13px;font-family:'Manrope',sans-serif;
+    background:transparent;color:var(--ink);border:none;
+    border-left:1px solid var(--glass-border-soft);border-right:1px solid var(--glass-border-soft);
+    -moz-appearance:textfield;
+  }
+  .oneshot-stepper .oneshot-input::-webkit-outer-spin-button, .oneshot-stepper .oneshot-input::-webkit-inner-spin-button{-webkit-appearance:none;margin:0;}
+  .oneshot-cost{font-size:11px;color:var(--amber);font-weight:800;}
+
   .editor-actions{display:flex;gap:12px;align-items:center;flex-wrap:wrap;padding-top:8px;border-top:1px solid var(--glass-border-soft);}
   .btn{font-family:'Manrope',sans-serif;font-weight:800;font-size:13px;letter-spacing:.04em;padding:12px 24px;border:none;cursor:pointer;transition:all .18s;border-radius:var(--r-pill);}
   .btn-save{
@@ -404,6 +436,7 @@
   .cart-row .cr-left b{color:var(--ink);font-weight:700;}
   .cart-row .cr-day{font-size:11px;color:var(--ink-faint);margin-left:6px;}
   .cart-row .cr-qty{font-weight:800;color:var(--teal-soft);background:rgba(94,232,204,0.10);padding:3px 10px;border:1px solid rgba(94,232,204,0.3);border-radius:var(--r-pill);font-size:12.5px;}
+  .cr-oneshot{font-size:10.5px;font-weight:800;color:var(--amber);background:rgba(255,199,115,0.14);border:1px solid rgba(255,199,115,0.35);padding:2px 8px;border-radius:var(--r-pill);}
 
   .loading-note{font-size:13px;color:var(--ink-faint);padding:20px 0;}
 
@@ -477,58 +510,103 @@
   .xt-legend-dot{width:7px;height:7px;border-radius:50%;background:var(--teal);flex:0 0 auto;box-shadow:0 0 8px rgba(94,232,204,0.7);}
 
   /* ---------- cross-tab schedule table ---------- */
+  .xt-zoom-bar{display:flex;justify-content:flex-end;margin-bottom:10px;}
+  .xt-zoom-btn{
+    display:flex;align-items:center;gap:6px;
+    padding:8px 15px;background:var(--glass-1);border:1px solid var(--glass-border-soft);
+    border-radius:var(--r-pill);color:var(--ink-dim);font-weight:800;font-size:12px;cursor:pointer;
+    transition:all .18s ease;box-shadow:var(--glass-hi);
+  }
+  .xt-zoom-btn:hover{background:var(--glass-2);color:var(--ink);border-color:var(--glass-border);}
+  .xt-zoom-btn .xt-zoom-icon{font-size:13px;}
   .cross-table-wrap{
     background:var(--glass-1);border:1px solid var(--glass-border-soft);border-radius:var(--r-lg);
     box-shadow:var(--glass-shadow), var(--glass-hi);
     overflow-x:auto;overflow-y:hidden;margin-bottom:20px;-webkit-overflow-scrolling:touch;
+    touch-action:pan-x pan-y;
   }
+  .xt-zoom-inner{width:fit-content;}
   .cross-table{border-collapse:separate;border-spacing:0;width:100%;}
-  .cross-table th, .cross-table td{padding:0;text-align:center;vertical-align:middle;}
+  .cross-table th, .cross-table td{padding:0;text-align:center;vertical-align:middle;border-right:1px solid var(--xt-line);}
+  .cross-table th:last-child, .cross-table td:last-child{border-right:none;}
   .xt-corner, .xt-name-cell{
     position:sticky;left:0;z-index:5;
     background:rgba(16,32,29,0.97);
     box-shadow:2px 0 8px rgba(0,0,0,0.25);
   }
-  .xt-corner{z-index:6;}
+  .xt-corner{z-index:6;border-bottom:2px solid var(--xt-line);}
   .xt-colhead{
-    padding:10px 8px;min-width:64px;border-bottom:1px solid var(--glass-border-soft);
+    padding:10px 6px;min-width:74px;border-bottom:2px solid var(--xt-line);
   }
-  .xt-colhead .xt-r{font-size:12px;font-weight:800;color:var(--ink);}
-  .xt-colhead .xt-t{font-size:9px;color:var(--ink-faint);margin-top:2px;white-space:nowrap;}
+  .xt-colhead .xt-r{font-size:13px;font-weight:800;color:var(--ink);}
+  .xt-colhead .xt-t{font-size:9.5px;color:var(--ink-faint);margin-top:2px;white-space:nowrap;}
   .xt-colhead.special .xt-r{color:var(--amber);}
   .xt-name-cell{
-    padding:8px 12px 8px 10px;display:flex;align-items:center;gap:8px;min-width:130px;
-    border-bottom:1px solid rgba(255,255,255,0.06);border-right:1px solid var(--glass-border-soft);
-    text-align:left;
+    padding:0;display:flex;flex-direction:column;align-items:stretch;gap:0;width:68px;min-width:68px;
+    border-bottom:1px solid var(--xt-line);
+    text-align:center;
   }
-  .xt-name-cell .xt-nm{font-weight:700;font-size:12.5px;color:var(--ink);white-space:nowrap;}
-  .xt-name-cell .xt-total{font-size:10px;color:var(--teal-soft);font-weight:800;margin-left:auto;flex:0 0 auto;}
-  .xt-cell-wrap{border-bottom:1px solid rgba(255,255,255,0.06);}
+  .cross-table td.xt-name-cell{border-right:2px solid var(--xt-line);}
+  .xt-name-cell .xt-photo{
+    position:relative;flex:1 1 auto;min-height:0;
+    display:flex;align-items:center;justify-content:center;overflow:hidden;
+    font-family:'Cormorant Garamond',serif;font-weight:700;font-size:20px;color:#04241d;
+  }
+  .xt-name-cell .xt-photo img{width:100%;height:100%;object-fit:cover;display:block;}
+  .xt-name-cell .xt-total{
+    position:absolute;top:3px;right:3px;
+    background:rgba(94,232,204,0.9);color:#04241d;
+    font-size:9.5px;font-weight:800;padding:1px 6px;border-radius:var(--r-pill);
+  }
+  .xt-nm-caption{
+    flex:0 0 auto;font-size:10px;font-weight:800;color:var(--ink);
+    padding:3px 2px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;
+    background:rgba(8,18,16,0.75);border-top:1px solid var(--xt-line);
+  }
+  .xt-cell-wrap{border-bottom:1px solid var(--xt-line);}
   .xt-cell{
-    position:relative;width:64px;height:56px;margin:0 auto;
-    display:flex;flex-direction:column;align-items:center;justify-content:center;gap:2px;
-    cursor:pointer;transition:background .15s ease;
+    position:relative;width:74px;height:96px;margin:0 auto;
+    display:flex;flex-direction:column;align-items:center;justify-content:center;gap:3px;
+    cursor:pointer;transition:background .15s ease;padding:4px 0;
   }
   .xt-cell:hover{background:rgba(94,232,204,0.08);}
   .xt-cell:active{background:rgba(94,232,204,0.16);}
   .xt-cell .xt-lane{
-    font-size:11px;font-weight:800;color:var(--teal-soft);
+    font-size:12px;font-weight:800;color:var(--teal-soft);
     background:rgba(94,232,204,0.12);border:1px solid rgba(94,232,204,0.35);
-    padding:2px 7px;border-radius:var(--r-pill);
+    padding:2px 8px;border-radius:var(--r-pill);
   }
   .xt-cell.xt-special .xt-lane{
     color:var(--amber);background:rgba(255,199,115,0.14);border-color:rgba(255,199,115,0.4);
   }
-  .xt-cell .xt-qtynum{font-size:14px;font-weight:800;color:var(--ink);}
+  .xt-cell .xt-qtynum{font-size:16px;font-weight:800;color:var(--ink);}
   .xt-cell.xt-has-qty .xt-qtynum{color:var(--teal-soft);}
   .xt-minus{
-    position:absolute;top:2px;right:2px;width:17px;height:17px;border-radius:50%;
+    position:absolute;top:3px;right:3px;width:18px;height:18px;border-radius:50%;
     background:rgba(255,95,126,0.18);border:1px solid rgba(255,95,126,0.4);color:var(--crimson-soft);
     font-size:10px;font-weight:800;display:flex;align-items:center;justify-content:center;
-    cursor:pointer;line-height:1;
+    cursor:pointer;line-height:1;z-index:2;
   }
   .xt-minus:hover{background:rgba(255,95,126,0.3);}
-  .xt-empty-cell{width:64px;height:56px;margin:0 auto;display:flex;align-items:center;justify-content:center;color:var(--ink-faint);font-size:13px;opacity:.4;}
+  .xt-empty-cell{width:74px;height:96px;margin:0 auto;display:flex;align-items:center;justify-content:center;color:var(--ink-faint);font-size:14px;opacity:.4;}
+
+  .xt-os{
+    position:relative;display:flex;align-items:center;gap:2px;margin-top:2px;
+    padding:2px 6px;border-radius:var(--r-pill);
+    background:var(--glass-2);border:1px solid var(--glass-border-soft);
+    font-size:9.5px;font-weight:800;color:var(--ink-faint);cursor:pointer;
+    transition:all .15s ease;
+  }
+  .xt-os.active{
+    background:rgba(255,199,115,0.16);border-color:rgba(255,199,115,0.4);color:var(--amber);
+  }
+  .xt-os-minus{
+    position:absolute;bottom:-6px;right:-6px;width:15px;height:15px;border-radius:50%;
+    background:rgba(255,95,126,0.22);border:1px solid rgba(255,95,126,0.45);color:var(--crimson-soft);
+    font-size:9px;font-weight:800;display:flex;align-items:center;justify-content:center;
+    cursor:pointer;line-height:1;z-index:2;
+  }
+  .xt-os-minus:hover{background:rgba(255,95,126,0.35);}
 
   /* ---------- home stat card ---------- */
   .home-stat-card{
@@ -552,6 +630,37 @@
     .slot-grid{grid-template-columns:repeat(auto-fill,minmax(150px,1fr));}
     .summary-total{flex-direction:column;align-items:flex-start;gap:6px;}
     .team-tab{min-width:140px;}
+  }
+
+  /* ---------- desktop / larger screens: use the extra space instead of staying phone-width ---------- */
+  @media(min-width:860px){
+    .wrap{max-width:1320px;padding:44px 40px 100px;}
+    h1{font-size:clamp(52px,5vw,74px);}
+
+    /* member editor popup: wider card, both days side by side instead of stacked */
+    .editor{max-width:920px;padding:34px 36px;}
+    .day-sections-wrap{display:grid;grid-template-columns:1fr 1fr;gap:22px;align-items:start;}
+    .day-section{margin-bottom:0;}
+
+    /* members grid: bigger cards, more per row */
+    .members-grid{grid-template-columns:repeat(auto-fill,minmax(168px,1fr));gap:16px;}
+
+    /* cross-table: a bit more breathing room per cell since there's space to spare */
+    .xt-colhead{min-width:88px;padding:14px 10px;}
+    .xt-name-cell{width:78px;min-width:78px;}
+    .xt-cell{width:88px;}
+    .xt-empty-cell{width:88px;}
+
+    /* summary: let cart entries flow two-up on wide screens */
+    .team-summary-block, .summary-group-block{max-width:920px;}
+    .cart-group{max-width:none;}
+
+    /* bottom nav: a little roomier since there's no thumb-reach constraint */
+    .bottom-nav{padding:9px;gap:4px;}
+    .nav-btn{padding:9px 22px;}
+
+    .modal-box{max-width:520px;}
+    .member-modal-overlay{padding:64px 24px;}
   }
 </style>
 </head>
@@ -605,6 +714,7 @@
     <div class="team-tabs" id="tableTeamTabs"></div>
     <div class="day-tabs" id="tableDayTabs"></div>
     <div class="xt-legend"><span class="xt-legend-dot"></span> แตะช่องเลนเพื่อ <b>+1 ใบ</b> · แตะเลข ✕ ตัวเล็กเพื่อ −1 ใบ</div>
+    <div class="xt-zoom-bar" id="xtZoomBar"></div>
     <div class="cross-table-wrap" id="crossTableHost"></div>
   </section>
 
@@ -794,7 +904,9 @@ function avatarInner(name, photo){
 let activeTeam = "TEAM_C";
 let activeMember = null;
 let draft = {};    // draft[day] = { slotKey: qty }  — both days edited together
+let draftOneshot = {}; // draftOneshot[day] = { slotKey: true } — 1-Shot Video toggle per slot, editing session only
 let cart = {};      // cart[team][day][name] = { slotKey: qty }
+let oneshot = {};   // oneshot[team][day][name][slotKey] = true — committed 1-Shot Video selections
 let photos = {};    // photos[name] = dataURL (shared across teams/days, names don't collide)
 let summarySortMode = "team";  // 'team' | 'member' | 'date'
 let tableActiveDay = null;     // set on init once TEAMS is known
@@ -834,6 +946,17 @@ async function loadState(){
     if(res && res.value){
       const parsed = JSON.parse(res.value);
       cart = parsed.cart || {};
+      oneshot = parsed.oneshot || {};
+      // normalize any legacy boolean flags (from the earlier on/off version) into a count of 1
+      Object.keys(oneshot).forEach(team=>{
+        Object.keys(oneshot[team]||{}).forEach(day=>{
+          Object.keys(oneshot[team][day]||{}).forEach(name=>{
+            Object.keys(oneshot[team][day][name]||{}).forEach(key=>{
+              if(oneshot[team][day][name][key] === true) oneshot[team][day][name][key] = 1;
+            });
+          });
+        });
+      });
       photos = {...DEFAULT_PHOTOS, ...(parsed.photos || {})};
     }
     storageStateEl.textContent = 'บันทึกข้ามเซสชันได้ ✓';
@@ -846,7 +969,7 @@ async function loadState(){
 
 async function persist(){
   try{
-    await window.storage.set(STORAGE_KEY, JSON.stringify({cart, photos}), false);
+    await window.storage.set(STORAGE_KEY, JSON.stringify({cart, photos, oneshot}), false);
   }catch(e){
     storageStateEl.textContent = 'บันทึกถาวรไม่สำเร็จ (จำไว้แค่ตอนนี้)';
     storageStateEl.classList.remove('ok');
@@ -883,9 +1006,12 @@ function openEditor(team, name){
   activeTeam = team;
   activeMember = name;
   draft = {};
+  draftOneshot = {};
   dayKeysFor(team).forEach(day=>{
     const existing = cart[team] && cart[team][day] && cart[team][day][name];
     draft[day] = existing ? {...existing} : {};
+    const existingOs = oneshot[team] && oneshot[team][day] && oneshot[team][day][name];
+    draftOneshot[day] = existingOs ? {...existingOs} : {};
   });
   document.body.style.overflow = 'hidden';
   renderAll();
@@ -893,6 +1019,7 @@ function openEditor(team, name){
 function closeEditor(){
   activeMember = null;
   draft = {};
+  draftOneshot = {};
   document.body.style.overflow = '';
   renderAll();
 }
@@ -997,6 +1124,48 @@ function renderTableDayTabs(){
   });
 }
 
+const XT_ZOOM_LEVELS = [0.6, 1]; // 2-step zoom: [0]=overview, [1]=detail (default)
+let xtZoomIndex = 1;
+
+function applyXtZoom(){
+  const inner = document.getElementById('xtZoomInner');
+  if(inner) inner.style.zoom = XT_ZOOM_LEVELS[xtZoomIndex];
+  renderXtZoomBar();
+}
+
+function renderXtZoomBar(){
+  const bar = document.getElementById('xtZoomBar');
+  if(!bar) return;
+  const atOverview = xtZoomIndex === 0;
+  bar.innerHTML = '<button class="xt-zoom-btn" id="xtZoomToggle"><span class="xt-zoom-icon">'+(atOverview?'🔍+':'🔍−')+'</span>'+(atOverview?'ซูมดูรายละเอียด':'ซูมดูภาพรวม')+'</button>';
+  document.getElementById('xtZoomToggle').addEventListener('click', ()=>{
+    xtZoomIndex = atOverview ? 1 : 0;
+    applyXtZoom();
+  });
+}
+
+// pinch-to-zoom: snaps to the nearest of the 2 zoom levels, like a ticket-booking seat map.
+// attached once to the persistent wrapper (not re-bound on every render).
+function attachPinchZoom(el){
+  let startDist = null;
+  const dist = (a,b)=>Math.hypot(a.clientX-b.clientX, a.clientY-b.clientY);
+  el.addEventListener('touchstart', (e)=>{
+    if(e.touches.length===2) startDist = dist(e.touches[0], e.touches[1]);
+  }, {passive:true});
+  el.addEventListener('touchmove', (e)=>{
+    if(e.touches.length===2 && startDist!==null){
+      const d = dist(e.touches[0], e.touches[1]);
+      const delta = d - startDist;
+      if(Math.abs(delta) > 45){
+        xtZoomIndex = delta > 0 ? 1 : 0;
+        applyXtZoom();
+        startDist = null;
+      }
+    }
+  }, {passive:true});
+  el.addEventListener('touchend', ()=>{ startDist = null; });
+}
+
 function renderCrossTable(){
   if(!crossTableHostEl) return;
   const team = activeTeam;
@@ -1013,7 +1182,7 @@ function renderCrossTable(){
   const specialCols = ['SP1','SP2'].filter(k=>specialKeys.has(k)).map(k=>({key:k, isSpecial:true}));
   const cols = roundCols.concat(specialCols);
 
-  let html = '<table class="cross-table"><thead><tr>';
+  let html = '<div class="xt-zoom-inner" id="xtZoomInner"><table class="cross-table"><thead><tr>';
   html += '<th class="xt-corner"></th>';
   cols.forEach(c=>{
     if(c.isSpecial){
@@ -1030,9 +1199,10 @@ function renderCrossTable(){
     const total = cartCountDay(team, day, name);
     html += '<tr>';
     html += '<td class="xt-name-cell">';
-    html += '<span class="avatar sm" style="background:'+(photos[name]?'#132923':colorFor(name))+'">'+avatarInner(name, photos[name])+'</span>';
-    html += '<span class="xt-nm">'+name+'</span>';
-    if(total>0) html += '<span class="xt-total">'+total+' ใบ</span>';
+    html += '<div class="xt-photo" style="background:'+(photos[name]?'#132923':colorFor(name))+'">'+avatarInner(name, photos[name]);
+    if(total>0) html += '<span class="xt-total">'+total+'</span>';
+    html += '</div>';
+    html += '<div class="xt-nm-caption">'+name+'</div>';
     html += '</td>';
 
     const m = d.members[name];
@@ -1040,7 +1210,7 @@ function renderCrossTable(){
       if(c.isSpecial){
         if(m.special === c.key){
           const qty = (cart[team] && cart[team][day] && cart[team][day][name] && cart[team][day][name][c.key]) || 0;
-          html += renderXtCell(team, day, name, c.key, true, qty, c.key);
+          html += renderXtCell(team, day, name, c.key, true, qty, c.key, 0);
         } else {
           html += '<td class="xt-cell-wrap"><div class="xt-empty-cell">—</div></td>';
         }
@@ -1049,7 +1219,8 @@ function renderCrossTable(){
         if(found){
           const key = 'r'+c.r;
           const qty = (cart[team] && cart[team][day] && cart[team][day][name] && cart[team][day][name][key]) || 0;
-          html += renderXtCell(team, day, name, key, false, qty, 'L'+found.lane);
+          const osCount = getOneshotCount(team, day, name, key);
+          html += renderXtCell(team, day, name, key, false, qty, 'L'+found.lane, osCount);
         } else {
           html += '<td class="xt-cell-wrap"><div class="xt-empty-cell">—</div></td>';
         }
@@ -1057,12 +1228,13 @@ function renderCrossTable(){
     });
     html += '</tr>';
   });
-  html += '</tbody></table>';
+  html += '</tbody></table></div>';
   crossTableHostEl.innerHTML = html;
+  applyXtZoom();
 
   crossTableHostEl.querySelectorAll('.xt-cell').forEach(cell=>{
     cell.addEventListener('click', (e)=>{
-      if(e.target.closest('.xt-minus')) return;
+      if(e.target.closest('.xt-minus') || e.target.closest('.xt-os') || e.target.closest('.xt-os-minus')) return;
       quickAdjustQty(cell.dataset.team, cell.dataset.day, cell.dataset.name, cell.dataset.key, cell.dataset.special==='1', 1);
     });
   });
@@ -1073,9 +1245,21 @@ function renderCrossTable(){
       quickAdjustQty(cell.dataset.team, cell.dataset.day, cell.dataset.name, cell.dataset.key, cell.dataset.special==='1', -1);
     });
   });
+  crossTableHostEl.querySelectorAll('.xt-os').forEach(el=>{
+    el.addEventListener('click', (e)=>{
+      e.stopPropagation();
+      quickAdjustOneshot(el.dataset.team, el.dataset.day, el.dataset.name, el.dataset.key, 1);
+    });
+  });
+  crossTableHostEl.querySelectorAll('.xt-os-minus').forEach(btn=>{
+    btn.addEventListener('click', (e)=>{
+      e.stopPropagation();
+      quickAdjustOneshot(btn.dataset.team, btn.dataset.day, btn.dataset.name, btn.dataset.key, -1);
+    });
+  });
 }
 
-function renderXtCell(team, day, name, key, isSpecial, qty, badgeLabel){
+function renderXtCell(team, day, name, key, isSpecial, qty, badgeLabel, osCount){
   let html = '<td class="xt-cell-wrap">';
   html += '<div class="xt-cell'+(isSpecial?' xt-special':'')+(qty>0?' xt-has-qty':'')+'" data-team="'+team+'" data-day="'+day+'" data-name="'+name+'" data-key="'+key+'" data-special="'+(isSpecial?1:0)+'">';
   if(qty>0){
@@ -1083,6 +1267,14 @@ function renderXtCell(team, day, name, key, isSpecial, qty, badgeLabel){
   }
   html += '<div class="xt-lane">'+badgeLabel+'</div>';
   html += '<div class="xt-qtynum">'+qty+'</div>';
+  if(!isSpecial){
+    html += '<div class="xt-os'+(osCount>0?' active':'')+'" data-team="'+team+'" data-day="'+day+'" data-name="'+name+'" data-key="'+key+'">';
+    html += '🎥'+(osCount>0?'×'+osCount:'');
+    if(osCount>0){
+      html += '<span class="xt-os-minus" data-team="'+team+'" data-day="'+day+'" data-name="'+name+'" data-key="'+key+'">−</span>';
+    }
+    html += '</div>';
+  }
   html += '</div></td>';
   return html;
 }
@@ -1120,6 +1312,17 @@ async function quickAdjustQty(team, day, name, key, isSpecial, delta){
     if(!cart[team][day][name]) cart[team][day][name] = {};
     cart[team][day][name][key] = newQty;
   }
+  if(oneshot[team] && oneshot[team][day] && oneshot[team][day][name] && oneshot[team][day][name][key]){
+    const maxAffordable = Math.floor(newQty/3);
+    if(oneshot[team][day][name][key] > maxAffordable){
+      if(maxAffordable<=0){
+        delete oneshot[team][day][name][key];
+        if(Object.keys(oneshot[team][day][name]).length === 0) delete oneshot[team][day][name];
+      } else {
+        oneshot[team][day][name][key] = maxAffordable;
+      }
+    }
+  }
   await persist();
 
   renderTeamTabs();
@@ -1133,6 +1336,48 @@ async function quickAdjustQty(team, day, name, key, isSpecial, delta){
 }
 function badgeForToast(key){
   return key.startsWith('r') ? 'Round '+key.slice(1) : key;
+}
+
+// direct 1-Shot Video adjustment from the table: each unit costs 3 tickets, added/removed from the same slot's cart qty.
+async function quickAdjustOneshot(team, day, name, key, delta){
+  const curCount = (oneshot[team] && oneshot[team][day] && oneshot[team][day][name] && oneshot[team][day][name][key]) || 0;
+  const newCount = Math.max(0, curCount + delta);
+  const curQty = (cart[team] && cart[team][day] && cart[team][day][name] && cart[team][day][name][key]) || 0;
+  const newQty = Math.max(0, curQty + (newCount - curCount)*3);
+
+  if(!cart[team]) cart[team] = {};
+  if(!cart[team][day]) cart[team][day] = {};
+  if(newQty === 0){
+    if(cart[team][day][name]){
+      delete cart[team][day][name][key];
+      if(Object.keys(cart[team][day][name]).length === 0) delete cart[team][day][name];
+    }
+  } else {
+    if(!cart[team][day][name]) cart[team][day][name] = {};
+    cart[team][day][name][key] = newQty;
+  }
+
+  if(!oneshot[team]) oneshot[team] = {};
+  if(!oneshot[team][day]) oneshot[team][day] = {};
+  if(newCount === 0){
+    if(oneshot[team][day][name]){
+      delete oneshot[team][day][name][key];
+      if(Object.keys(oneshot[team][day][name]).length === 0) delete oneshot[team][day][name];
+    }
+  } else {
+    if(!oneshot[team][day][name]) oneshot[team][day][name] = {};
+    oneshot[team][day][name][key] = newCount;
+  }
+  await persist();
+
+  renderTeamTabs();
+  renderPicker();
+  renderMembersGrid();
+  renderHomeStats();
+  renderCrossTable();
+  renderSortTabs();
+  renderSummary();
+  if(delta>0) showToast(name+' 🎥 1-Shot Video +1 ('+badgeForToast(key)+' · 3 ใบ)');
 }
 
 function renderHomeStats(){
@@ -1216,6 +1461,7 @@ function renderDaySection(team, day, name){
       html += '</div>';
     } else {
       const info = d.rounds[s.r];
+      const osCount = (draftOneshot[day] && draftOneshot[day][s.key]) || 0;
       html += '<div class="slot-card">';
       html += '<div class="rnd">Round '+s.r+'</div>';
       html += '<div class="time">'+info.time+'</div>';
@@ -1226,6 +1472,16 @@ function renderDaySection(team, day, name){
       html += '<input type="number" class="step-input" inputmode="numeric" min="0" value="'+qty+'">';
       html += '<button class="step-btn plus">+</button>';
       html += '</div>';
+      html += '<div class="oneshot-row'+(osCount>0?' active':'')+'">';
+      html += '<div class="oneshot-head"><span class="oneshot-icon">🎥</span><span class="oneshot-label">1-Shot Video (1 ครั้ง = 3 ใบ)</span></div>';
+      html += '<div class="oneshot-controls">';
+      html += '<div class="oneshot-stepper" data-day="'+day+'" data-slot="'+s.key+'">';
+      html += '<button class="step-btn oneshot-minus" '+(osCount<=0?'disabled':'')+'>−</button>';
+      html += '<input type="number" class="oneshot-input" inputmode="numeric" min="0" value="'+osCount+'">';
+      html += '<button class="step-btn oneshot-plus">+</button>';
+      html += '</div>';
+      if(osCount>0) html += '<span class="oneshot-cost">= '+(osCount*3)+' ใบ</span>';
+      html += '</div></div>';
       html += '</div>';
     }
   });
@@ -1385,6 +1641,13 @@ async function applyQtyChange(team, day, name, key, isSpecial, newQty, maxVal){
   if(!draft[day]) draft[day] = {};
   if(newQty === 0){ delete draft[day][key]; }
   else { draft[day][key] = newQty; }
+  if(draftOneshot[day] && draftOneshot[day][key]){
+    const maxAffordable = Math.floor(newQty/3);
+    if(draftOneshot[day][key] > maxAffordable){
+      if(maxAffordable<=0) delete draftOneshot[day][key];
+      else draftOneshot[day][key] = maxAffordable;
+    }
+  }
   renderEditor();
 }
 
@@ -1404,9 +1667,11 @@ function renderEditor(){
   html += '</div>';
   html += '<button class="close-x" id="closeXBtn">ปิด ✕</button></div>';
 
+  html += '<div class="day-sections-wrap">';
   dayKeysFor(team).forEach(day=>{
     html += renderDaySection(team, day, name);
   });
+  html += '</div>';
 
   html += '<div class="editor-actions">';
   html += '<button class="btn btn-save" id="saveBtn">บันทึกรอบของ '+name+' (ทั้ง 2 วัน)</button>';
@@ -1465,8 +1730,46 @@ function renderEditor(){
     });
   });
 
+  overlay.querySelectorAll('.oneshot-stepper').forEach(st=>{
+    const day = st.dataset.day;
+    const key = st.dataset.slot;
+    const input = st.querySelector('.oneshot-input');
+
+    const setCount = (newCount)=>{
+      newCount = Math.max(0, isNaN(newCount) ? 0 : newCount);
+      const oldCount = (draftOneshot[day] && draftOneshot[day][key]) || 0;
+      const deltaTickets = (newCount - oldCount) * 3;
+      if(!draftOneshot[day]) draftOneshot[day] = {};
+      if(newCount === 0){ delete draftOneshot[day][key]; }
+      else { draftOneshot[day][key] = newCount; }
+      draft[day] = draft[day] || {};
+      draft[day][key] = Math.max(0, (draft[day][key]||0) + deltaTickets);
+      if(draft[day][key] === 0) delete draft[day][key];
+      renderEditor();
+    };
+
+    st.querySelector('.oneshot-plus').addEventListener('click', ()=>{
+      const cur = (draftOneshot[day] && draftOneshot[day][key]) || 0;
+      setCount(cur+1);
+    });
+    st.querySelector('.oneshot-minus').addEventListener('click', ()=>{
+      const cur = (draftOneshot[day] && draftOneshot[day][key]) || 0;
+      if(cur<=0) return;
+      setCount(cur-1);
+    });
+    input.addEventListener('change', ()=>{
+      let val = parseInt(input.value, 10);
+      if(isNaN(val) || val<0) val = 0;
+      setCount(val);
+    });
+    input.addEventListener('keydown', (e)=>{
+      if(e.key==='Enter') input.blur();
+    });
+  });
+
   document.getElementById('saveBtn').addEventListener('click', async ()=>{
     if(!cart[team]) cart[team] = {};
+    if(!oneshot[team]) oneshot[team] = {};
     dayKeysFor(team).forEach(day=>{
       const cleaned = {};
       Object.keys(draft[day]||{}).forEach(k=>{ if(draft[day][k]>0) cleaned[k]=draft[day][k]; });
@@ -1475,6 +1778,18 @@ function renderEditor(){
         delete cart[team][day][name];
       } else {
         cart[team][day][name] = cleaned;
+      }
+
+      const cleanedOs = {};
+      Object.keys(draftOneshot[day]||{}).forEach(k=>{
+        const count = draftOneshot[day][k];
+        if(count>0 && cleaned[k]>=count*3) cleanedOs[k] = count;
+      });
+      if(!oneshot[team][day]) oneshot[team][day] = {};
+      if(Object.keys(cleanedOs).length===0){
+        delete oneshot[team][day][name];
+      } else {
+        oneshot[team][day][name] = cleanedOs;
       }
     });
     await persist();
@@ -1540,6 +1855,10 @@ function roundOrderForDay(day){
   return order;
 }
 
+function getOneshotCount(team, day, name, key){
+  return (oneshot[team] && oneshot[team][day] && oneshot[team][day][name] && oneshot[team][day][name][key]) || 0;
+}
+
 function renderCartGroupCard(team, day, name){
   let html = '<div class="cart-group">';
   html += '<div class="cart-group-head"><div class="cart-group-head-left">';
@@ -1551,7 +1870,9 @@ function renderCartGroupCard(team, day, name){
   Object.keys(cart[team][day][name]).forEach(key=>{
     const lbl = slotLabel(team, day, name, key);
     const qty = cart[team][day][name][key];
-    html += '<div class="cart-row"><div class="cr-left"><b>'+lbl.title+'</b> &nbsp;·&nbsp; '+lbl.sub+'</div><div class="cr-qty">x'+qty+'</div></div>';
+    const osCount = getOneshotCount(team, day, name, key);
+    const osBadge = osCount>0 ? ' &nbsp;<span class="cr-oneshot">🎥 1-Shot Video'+(osCount>1?' ×'+osCount:'')+'</span>' : '';
+    html += '<div class="cart-row"><div class="cr-left"><b>'+lbl.title+'</b> &nbsp;·&nbsp; '+lbl.sub+osBadge+'</div><div class="cr-qty">x'+qty+'</div></div>';
   });
   html += '</div></div>';
   return html;
@@ -1736,6 +2057,7 @@ function bindSummaryHandlers(){
     btn.addEventListener('click', async ()=>{
       const team = btn.dataset.team, day = btn.dataset.day, name = btn.dataset.remove;
       if(cart[team] && cart[team][day]) delete cart[team][day][name];
+      if(oneshot[team] && oneshot[team][day]) delete oneshot[team][day][name];
       await persist();
       if(activeMember === name && activeTeam === team) closeEditor();
       else { renderTeamTabs(); renderPicker(); renderSummary(); }
@@ -1750,6 +2072,12 @@ function bindSummaryHandlers(){
           delete cart[team][day][name];
         }
       }
+      if(oneshot[team] && oneshot[team][day] && oneshot[team][day][name]){
+        delete oneshot[team][day][name][key];
+        if(Object.keys(oneshot[team][day][name]).length === 0){
+          delete oneshot[team][day][name];
+        }
+      }
       await persist();
       if(activeMember === name && activeTeam === team) closeEditor();
       else { renderTeamTabs(); renderPicker(); renderSummary(); }
@@ -1761,6 +2089,7 @@ function bindSummaryHandlers(){
       const ok = await showConfirmModal('ล้างข้อมูลทั้งหมด', 'ล้างรายการที่บันทึกไว้ทั้งหมดทุกทีมทุกวัน ใช่หรือไม่? รูปที่อัปโหลดจะยังอยู่');
       if(!ok) return;
       cart = {};
+      oneshot = {};
       await persist();
       closeEditor();
     });
@@ -1783,6 +2112,7 @@ function renderAll(){
 (async function init(){
   await loadState();
   renderAll();
+  if(crossTableHostEl) attachPinchZoom(crossTableHostEl);
 })();
 </script>
 </body>
