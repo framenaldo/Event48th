@@ -1318,12 +1318,37 @@ const storageStateEl = document.getElementById('storageState');
 
 const STORAGE_KEY = 'cgm48-planner-multiteam-2day';
 
+/* ---------- storage layer: ใช้ window.storage ถ้ามี (เช่นตอนเปิดในแชท Claude)
+   ถ้าไม่มี (เช่นดาวน์โหลดไฟล์ไปเปิดเองในเบราว์เซอร์/บันทึกไว้ที่หน้าจอมือถือ) จะสลับไปใช้ localStorage ของเบราว์เซอร์แทนอัตโนมัติ
+   เพื่อให้ "รอบที่เลือก" และ "จำนวนบัตร" ยังคงอยู่หลังรีเฟรชไม่ว่าจะเปิดแอปด้วยวิธีไหน ---------- */
+async function storageGet(key){
+  if(window.storage && typeof window.storage.get === 'function'){
+    try{
+      const res = await window.storage.get(key, false);
+      if(res && typeof res.value === 'string') return res.value;
+    }catch(e){ /* key not found on this backend — fall through to try localStorage below */ }
+  }
+  try{
+    const local = window.localStorage.getItem(key);
+    if(local !== null) return local;
+  }catch(e){ /* localStorage unavailable (rare: private browsing etc.) */ }
+  return null;
+}
+async function storageSet(key, value){
+  let ok = false;
+  if(window.storage && typeof window.storage.set === 'function'){
+    try{ await window.storage.set(key, value, false); ok = true; }catch(e){ /* try localStorage as backup below */ }
+  }
+  try{ window.localStorage.setItem(key, value); ok = true; }catch(e){ /* ignore */ }
+  if(!ok) throw new Error('no storage backend available');
+}
+
 async function loadState(){
   photos = {...DEFAULT_PHOTOS};
   try{
-    const res = await window.storage.get(STORAGE_KEY, false);
-    if(res && res.value){
-      const parsed = JSON.parse(res.value);
+    const raw = await storageGet(STORAGE_KEY);
+    if(raw){
+      const parsed = JSON.parse(raw);
       cart = parsed.cart || {};
       oneshot = parsed.oneshot || {};
       ownedTickets = Number(parsed.ownedTickets) || 0;
@@ -1344,7 +1369,7 @@ async function loadState(){
     storageStateEl.classList.remove('err');
     storageStateEl.classList.add('ok');
   }catch(e){
-    // key doesn't exist yet (first-ever visit) — that's normal, not an error
+    // ไม่มีข้อมูลเก่าเลย (เข้าใช้ครั้งแรก) ถือว่าปกติ ไม่ใช่ error
     storageStateEl.textContent = 'บันทึกข้ามเซสชันได้ ✓';
     storageStateEl.classList.remove('err');
     storageStateEl.classList.add('ok');
@@ -1362,7 +1387,7 @@ function customPhotosOnly(){
 
 async function persist(){
   try{
-    await window.storage.set(STORAGE_KEY, JSON.stringify({cart, photos: customPhotosOnly(), oneshot, ownedTickets}), false);
+    await storageSet(STORAGE_KEY, JSON.stringify({cart, photos: customPhotosOnly(), oneshot, ownedTickets}));
     storageStateEl.textContent = 'บันทึกข้ามเซสชันได้ ✓';
     storageStateEl.classList.remove('err');
     storageStateEl.classList.add('ok');
