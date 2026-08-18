@@ -1337,23 +1337,40 @@ async function loadState(){
           });
         });
       });
+      // parsed.photos only ever contains user-uploaded custom photos (see persist()) — merge on top of the built-in defaults
       photos = {...DEFAULT_PHOTOS, ...(parsed.photos || {})};
     }
     storageStateEl.textContent = 'บันทึกข้ามเซสชันได้ ✓';
+    storageStateEl.classList.remove('err');
     storageStateEl.classList.add('ok');
   }catch(e){
+    // key doesn't exist yet (first-ever visit) — that's normal, not an error
     storageStateEl.textContent = 'บันทึกข้ามเซสชันได้ ✓';
+    storageStateEl.classList.remove('err');
     storageStateEl.classList.add('ok');
   }
 }
 
+// เก็บเฉพาะรูปที่ผู้ใช้อัปโหลดเอง (ต่างจากรูป default ที่ฝังมากับแอปอยู่แล้ว) เพื่อไม่ให้ payload ที่บันทึกทุกครั้งบวมเกินจำเป็น
+function customPhotosOnly(){
+  const custom = {};
+  Object.keys(photos).forEach(name=>{
+    if(photos[name] && photos[name] !== DEFAULT_PHOTOS[name]) custom[name] = photos[name];
+  });
+  return custom;
+}
+
 async function persist(){
   try{
-    await window.storage.set(STORAGE_KEY, JSON.stringify({cart, photos, oneshot, ownedTickets}), false);
+    await window.storage.set(STORAGE_KEY, JSON.stringify({cart, photos: customPhotosOnly(), oneshot, ownedTickets}), false);
+    storageStateEl.textContent = 'บันทึกข้ามเซสชันได้ ✓';
+    storageStateEl.classList.remove('err');
+    storageStateEl.classList.add('ok');
   }catch(e){
     storageStateEl.textContent = 'บันทึกถาวรไม่สำเร็จ (จำไว้แค่ตอนนี้)';
     storageStateEl.classList.remove('ok');
     storageStateEl.classList.add('err');
+    showToast('บันทึกไม่สำเร็จ — ลองอีกครั้งนะ', 'warn');
   }
 }
 
