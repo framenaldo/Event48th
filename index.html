@@ -662,7 +662,6 @@
   .pf-search-input:focus{outline:none;border-color:var(--teal);}
 
   .pf-member-list{
-    max-height:min(58vh, 620px);overflow-y:auto;-webkit-overflow-scrolling:touch;
     background:#12201c;border:1px solid #223530;border-radius:14px;padding:6px;margin-bottom:16px;
   }
   .pf-mrow{display:flex;align-items:center;gap:9px;padding:6px 9px;border-radius:9px;cursor:pointer;transition:background .12s;}
@@ -684,6 +683,74 @@
     padding:8px 9px 4px;
   }
   .pf-empty-search{padding:26px 16px;text-align:center;color:var(--ink-faint);font-size:13px;}
+
+  /* ---------- Planner: rounds×members table (tap a row → opens the round-picker popup) ---------- */
+  .pf-xtable-wrap{
+    overflow-x:auto;-webkit-overflow-scrolling:touch;touch-action:pan-x pan-y;
+    border:1px solid #223530;border-radius:14px;margin-bottom:16px;background:#12201c;
+  }
+  .pf-xtable{border-collapse:separate;border-spacing:0;width:100%;}
+  .pf-xtable th, .pf-xtable td{padding:0;text-align:center;vertical-align:middle;}
+  .pf-xtable thead th{
+    background:#16241f;font-size:11px;font-weight:800;color:var(--ink-faint);
+    padding:10px 8px;white-space:nowrap;border-bottom:1px solid #2c433c;
+  }
+  .pf-xtable thead th.pf-th-special{color:var(--amber);}
+  .pf-xtable thead th.pf-th-corner{position:sticky;left:0;z-index:6;background:#16241f;}
+  .pf-xth-name{
+    position:sticky;left:0;z-index:3;background:#12201c;
+    text-align:left !important;padding:9px 10px !important;min-width:126px;
+    border-right:1px solid #2c433c;box-shadow:2px 0 6px rgba(0,0,0,0.2);
+  }
+  .pf-xtable tbody tr{border-bottom:1px solid rgba(255,255,255,0.08);}
+  .pf-xtable tbody tr.pf-xrow{cursor:pointer;}
+  .pf-xtable tbody tr.pf-xrow:active td{background:#1b2b27;}
+  .pf-xtable tbody tr.pf-xrow.active td{background:rgba(94,232,204,0.14);}
+  .pf-xtable tbody tr.pf-xrow.active .pf-xth-name{background:rgba(94,232,204,0.14);}
+  .pf-xrow-name{display:flex;align-items:center;gap:8px;}
+  .pf-xrow-avatar{
+    width:26px;height:26px;border-radius:50%;overflow:hidden;flex:0 0 auto;
+    display:flex;align-items:center;justify-content:center;font-size:10px;font-weight:800;color:#fff;
+  }
+  .pf-xrow-avatar img{width:100%;height:100%;object-fit:cover;display:block;}
+  .pf-xrow-nametext{font-size:12.5px;font-weight:700;color:var(--ink);white-space:nowrap;}
+  .pf-xrow-count{color:var(--teal-soft);font-weight:800;}
+
+  .pf-xtd-slot{min-width:50px;padding:8px 4px !important;}
+  .pf-xslot-lane{font-size:9px;color:var(--ink-faint);}
+  .pf-xslot-qty{font-size:14px;font-weight:800;color:var(--teal-soft);}
+  .pf-xslot-qty.zero{color:var(--ink-faint);opacity:.55;}
+  .pf-xslot-empty{color:var(--ink-faint);opacity:.3;font-size:12px;}
+
+  .pf-xsection-row td{
+    background:#0e1815;padding:7px 10px !important;font-size:10px;font-weight:800;letter-spacing:.08em;
+    text-transform:uppercase;color:var(--ink-faint);text-align:left !important;
+  }
+
+  /* ---------- Planner: round-picker popup (opens on tapping a member row) ---------- */
+  .pf-modal-box{
+    background:#16241f;border:1px solid var(--glass-border);border-radius:var(--r-lg);
+    box-shadow:0 24px 70px rgba(0,0,0,0.5), var(--glass-hi);
+    width:100%;max-width:440px;height:fit-content;margin:auto 0;animation:fadein .2s ease;
+    overflow:hidden;
+  }
+  .pf-modal-head{
+    display:flex;align-items:center;gap:12px;padding:18px 18px 16px;
+    border-bottom:1px solid #223530;
+  }
+  .pf-modal-avatar{
+    width:44px;height:44px;border-radius:50%;overflow:hidden;flex:0 0 auto;
+    display:flex;align-items:center;justify-content:center;font-size:14px;font-weight:800;color:#fff;
+  }
+  .pf-modal-avatar img{width:100%;height:100%;object-fit:cover;display:block;}
+  .pf-modal-title-wrap{flex:1 1 auto;min-width:0;}
+  .pf-modal-name{font-family:'Cormorant Garamond',serif;font-weight:700;font-style:italic;font-size:21px;color:var(--teal-soft);line-height:1.15;}
+  .pf-modal-sub{font-size:12px;color:var(--ink-faint);margin-top:2px;}
+  .pf-modal-close{
+    flex:0 0 auto;width:32px;height:32px;border-radius:50%;background:#1b2b27;border:1px solid #2c433c;
+    color:var(--ink);font-size:14px;cursor:pointer;display:flex;align-items:center;justify-content:center;
+  }
+  .pf-modal-scroll{padding:16px 18px 18px;max-height:70vh;overflow-y:auto;-webkit-overflow-scrolling:touch;}
 
   .pf-cards{display:flex;flex-direction:column;gap:8px;margin-bottom:14px;}
   .pf-card{
@@ -1006,8 +1073,7 @@
       <svg class="pf-search-icon" viewBox="0 0 24 24"><circle cx="11" cy="11" r="7"/><path d="m21 21-4.3-4.3"/></svg>
       <input type="text" id="plannerSearchInput" class="pf-search-input" placeholder="ค้นหาชื่อเมมเบอร์…" autocomplete="off">
     </div>
-    <div class="pf-member-list" id="plannerChips"></div>
-    <div id="plannerCardsHost"></div>
+    <div class="pf-xtable-wrap" id="plannerChips"></div>
 
     <footer>
       <b>SP 1</b> = รอบพิเศษ เริ่ม 19:30 &nbsp;·&nbsp; <b>SP 2</b> = รอบพิเศษ เริ่ม 20:30<br>
@@ -1722,6 +1788,36 @@ function renderTableDayTabs(){
 /* ---------- Planner flat UI: รวมทุกทีมไว้ในที่เดียว ไม่แยกทีม ---------- */
 let plannerActiveMember = null; // {name, team}
 let plannerSearchQuery = '';
+let plannerPickerOpen = false; // ป๊อปอัปเลือกรอบ (เปิดเมื่อแตะชื่อในลิสต์)
+let plannerModalOverlay = null;
+
+function getPlannerModalOverlay(){
+  if(!plannerModalOverlay){
+    plannerModalOverlay = document.createElement('div');
+    plannerModalOverlay.className = 'member-modal-overlay';
+    plannerModalOverlay.style.display = 'none';
+    plannerModalOverlay.addEventListener('click', (e)=>{
+      if(e.target === plannerModalOverlay) closePlannerPicker();
+    });
+    document.body.appendChild(plannerModalOverlay);
+  }
+  return plannerModalOverlay;
+}
+function openPlannerPicker(team, name){
+  plannerActiveMember = {name, team};
+  plannerPickerOpen = true;
+  document.body.style.overflow = 'hidden';
+  renderPlannerChips();
+  renderPlannerCards();
+}
+function closePlannerPicker(){
+  plannerPickerOpen = false;
+  document.body.style.overflow = '';
+  const overlay = getPlannerModalOverlay();
+  overlay.style.display = 'none';
+  overlay.innerHTML = '';
+  renderPlannerChips();
+}
 
 function allMembersForDay(day){
   const list = [];
@@ -1738,54 +1834,94 @@ function renderPlannerFlat(){
 }
 
 function renderPlannerChips(){
-  const listEl = document.getElementById('plannerChips');
-  if(!listEl) return;
+  const wrapEl = document.getElementById('plannerChips');
+  if(!wrapEl) return;
   const day = tableActiveDay;
   const allMembers = allMembersForDay(day);
   if(!plannerActiveMember || !allMembers.find(m=>m.name===plannerActiveMember.name)){
     plannerActiveMember = allMembers[0] || null;
   }
   const q = plannerSearchQuery;
-  let html = '';
+  const d0 = dayData('TEAM_C', day); // โครงสร้างรอบเหมือนกันทุกทีมในวันเดียวกัน ใช้ TEAM_C เป็นตัวอ้างอิงคอลัมน์ได้เลย
+  const roundKeys = Object.keys(d0.rounds);
+  const specialKeys = Object.keys(d0.special);
+  const colCount = 1 + roundKeys.length + specialKeys.length;
+
+  let html = '<table class="pf-xtable"><thead><tr>';
+  html += '<th class="pf-th-corner"></th>';
+  roundKeys.forEach(r=>{ html += '<th>R'+r+'</th>'; });
+  specialKeys.forEach(sp=>{ html += '<th class="pf-th-special">'+sp+'</th>'; });
+  html += '</tr></thead><tbody>';
+
+  let anyRows = false;
   TEAM_ORDER.forEach(team=>{
-    const teamMembers = allMembers.filter(m=> m.team===team && (!q || m.name.toLowerCase().includes(q)) );
-    if(teamMembers.length===0) return;
-    html += '<div class="pf-section-label">'+TEAMS[team].label+'</div>';
-    teamMembers.forEach(m=>{
-      const active = plannerActiveMember && plannerActiveMember.name===m.name;
-      const count = cartCountDay(m.team, day, m.name);
-      const photo = photos[m.name];
-      html += '<div class="pf-mrow'+(active?' active':'')+'" data-name="'+m.name+'" data-team="'+m.team+'">';
-      html += '<span class="pf-mrow-avatar" style="background:'+(photo?'#132923':colorFor(m.name))+'">'+avatarInner(m.name, photo)+'</span>';
-      html += '<span class="pf-mrow-name">'+m.name+'</span>';
-      if(count>0) html += '<span class="pf-mrow-count">'+count+' ใบ</span>';
-      html += '<span class="pf-mrow-chevron">›</span>';
-      html += '</div>';
+    const dt = dayData(team, day);
+    const names = Object.keys(dt.members).filter(name => !q || name.toLowerCase().includes(q));
+    if(names.length===0) return;
+    anyRows = true;
+    html += '<tr class="pf-xsection-row"><td colspan="'+colCount+'">'+TEAMS[team].label+'</td></tr>';
+    names.forEach(name=>{
+      const photo = photos[name];
+      const total = cartCountDay(team, day, name);
+      const active = plannerPickerOpen && plannerActiveMember && plannerActiveMember.name===name;
+      const info = dt.members[name];
+      const laneByRound = {};
+      info.rounds.forEach(rr=>{ laneByRound[rr.r] = rr.lane; });
+
+      html += '<tr class="pf-xrow'+(active?' active':'')+'" data-team="'+team+'" data-name="'+name+'">';
+      html += '<td class="pf-xth-name"><div class="pf-xrow-name"><span class="pf-xrow-avatar" style="background:'+(photo?'#132923':colorFor(name))+'">'+avatarInner(name, photo)+'</span><span class="pf-xrow-nametext">'+name+(total>0?' <span class="pf-xrow-count">·'+total+'</span>':'')+'</span></div></td>';
+
+      roundKeys.forEach(r=>{
+        const rNum = parseInt(r,10);
+        if(laneByRound[rNum] !== undefined){
+          const qty = (cart[team]&&cart[team][day]&&cart[team][day][name]&&cart[team][day][name]['r'+rNum]) || 0;
+          html += '<td class="pf-xtd-slot"><div class="pf-xslot-lane">L'+laneByRound[rNum]+'</div><div class="pf-xslot-qty'+(qty===0?' zero':'')+'">'+qty+'</div></td>';
+        } else {
+          html += '<td class="pf-xtd-slot"><span class="pf-xslot-empty">—</span></td>';
+        }
+      });
+      specialKeys.forEach(sp=>{
+        if(info.special === sp){
+          const qty = (cart[team]&&cart[team][day]&&cart[team][day][name]&&cart[team][day][name][sp]) || 0;
+          html += '<td class="pf-xtd-slot"><div class="pf-xslot-lane">'+sp+'</div><div class="pf-xslot-qty'+(qty===0?' zero':'')+'" style="'+(qty>0?'color:var(--amber)':'')+'">'+qty+'</div></td>';
+        } else {
+          html += '<td class="pf-xtd-slot"><span class="pf-xslot-empty">—</span></td>';
+        }
+      });
+      html += '</tr>';
     });
   });
-  if(html===''){
+  html += '</tbody></table>';
+
+  if(!anyRows){
     html = '<div class="pf-empty-search">ไม่พบชื่อที่ค้นหา</div>';
   }
-  listEl.innerHTML = html;
-  listEl.querySelectorAll('.pf-mrow').forEach(el=>{
-    el.addEventListener('click', ()=>{
-      plannerActiveMember = {name: el.dataset.name, team: el.dataset.team};
-      renderPlannerChips();
-      renderPlannerCards();
+  wrapEl.innerHTML = html;
+  wrapEl.querySelectorAll('.pf-xrow').forEach(row=>{
+    row.addEventListener('click', ()=>{
+      openPlannerPicker(row.dataset.team, row.dataset.name);
     });
   });
 }
 
 function renderPlannerCards(){
-  const host = document.getElementById('plannerCardsHost');
-  if(!host) return;
-  if(!plannerActiveMember){ host.innerHTML = ''; return; }
+  if(!plannerPickerOpen || !plannerActiveMember) return;
+  const overlay = getPlannerModalOverlay();
   const {name, team} = plannerActiveMember;
   const day = tableActiveDay;
   const slots = slotsFor(team, day, name);
   const d = dayData(team, day);
+  const photo = photos[name];
 
-  let html = '<div class="pf-cards">';
+  let html = '<div class="pf-modal-box">';
+  html += '<div class="pf-modal-head">';
+  html += '<span class="pf-modal-avatar" style="background:'+(photo?'#132923':colorFor(name))+'">'+avatarInner(name, photo)+'</span>';
+  html += '<div class="pf-modal-title-wrap"><div class="pf-modal-name">'+name+'</div><div class="pf-modal-sub">'+d.weekday+' '+d.dateLabel+' · '+TEAMS[team].label+'</div></div>';
+  html += '<button class="pf-modal-close" id="plannerModalCloseBtn">✕</button>';
+  html += '</div>';
+  html += '<div class="pf-modal-scroll">';
+
+  html += '<div class="pf-cards">';
   slots.forEach(s=>{
     const isSpecial = !!s.special;
     const key = isSpecial ? s.special : ('r'+s.r);
@@ -1813,27 +1949,33 @@ function renderPlannerCards(){
   const dayTotal = cartCountDay(team, day, name);
   html += '<div class="pf-total"><span class="pf-total-label">รวมวันนี้ของ '+name+'</span><span class="pf-total-num">'+dayTotal+' ใบ · '+priceLabel(dayTotal)+'</span></div>';
 
-  host.innerHTML = html;
+  html += '</div>'; // pf-modal-scroll
+  html += '</div>'; // pf-modal-box
 
-  host.querySelectorAll('.pf-plus').forEach(btn=>{
+  overlay.innerHTML = html;
+  overlay.style.display = 'flex';
+
+  document.getElementById('plannerModalCloseBtn').addEventListener('click', closePlannerPicker);
+
+  overlay.querySelectorAll('.pf-plus').forEach(btn=>{
     btn.addEventListener('click', async ()=>{
       await quickAdjustQty(team, day, name, btn.dataset.key, btn.dataset.special==='1', 1);
       renderPlannerFlat();
     });
   });
-  host.querySelectorAll('.pf-minus').forEach(btn=>{
+  overlay.querySelectorAll('.pf-minus').forEach(btn=>{
     btn.addEventListener('click', async ()=>{
       await quickAdjustQty(team, day, name, btn.dataset.key, btn.dataset.special==='1', -1);
       renderPlannerFlat();
     });
   });
-  host.querySelectorAll('.pf-os-plus').forEach(btn=>{
+  overlay.querySelectorAll('.pf-os-plus').forEach(btn=>{
     btn.addEventListener('click', async ()=>{
       await quickAdjustOneshot(team, day, name, btn.dataset.key, 1);
       renderPlannerFlat();
     });
   });
-  host.querySelectorAll('.pf-os-minus').forEach(btn=>{
+  overlay.querySelectorAll('.pf-os-minus').forEach(btn=>{
     btn.addEventListener('click', async ()=>{
       await quickAdjustOneshot(team, day, name, btn.dataset.key, -1);
       renderPlannerFlat();
